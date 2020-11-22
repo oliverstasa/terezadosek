@@ -371,19 +371,16 @@ export function changeNextButton(action) {
   switch (action) {
     case 'out':
 
+      // animates next button away
       next.css({right: '20vh', 'transform': 'scale(0.9)', opacity: 0});
 
     break;
     case 'in':
 
+      // make new colors in next button
+      $('#next').css({'background-image': 'linear-gradient(to right, '+newHex('light')+' 0%, '+newHex('random')+' 51%, '+newHex('dark')+' 100%)'});
 
-      // creates new colors
-      var randGradient = {'a': newHex('light'),
-                          'b': newHex('random'),
-                          'c': newHex('dark')};
-
-      $('#next').css({'background-image': 'linear-gradient(to right, '+randGradient.a+' 0%, '+randGradient.b+' 51%, '+randGradient.c+' 100%)'});
-
+      // animates next button back in
       next.css({right: '0', 'transform': 'scale(1)', opacity: 1});
 
     break;
@@ -395,7 +392,7 @@ export function changeNextButton(action) {
 function newHex(type){
 
   // random, light or dark color
-  switch(type) {
+  switch (type) {
     case 'random':
       return '#'+Math.floor(Math.random()*16777215).toString(16);
     break;
@@ -415,5 +412,24 @@ function newHex(type){
     }
     return '#'+color;
   }
+
+}
+
+
+
+/*
+loading... eh
+*/
+export function loading(action) {
+
+  switch (action) {
+    case 'on':
+
+    break;
+    case 'off':
+
+    break;
+  }
+
 
 }
