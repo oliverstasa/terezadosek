@@ -1,0 +1,104 @@
+/*
+css, hello!
+*/
+
+
+/*
+font import
+*/
+@font-face {font-family: "regular"; src: url("/data/FKRomanDisplay-Medium.woff2");}
+
+
+/*
+global css
+*/
+html, body {margin: 0; padding: 0; width: 100%; height: 100%; font-family: regular, courier; font-display: fallback; overflow: hidden; position: absolute; top: 0; left: 0;}
+
+*::-webkit-scrollbar-track {background: transparent;}
+*::-webkit-scrollbar {width: 0.5vh; height: 0.5vh; background: transparent;}
+*::-webkit-scrollbar-thumb {background: black;}
+
+
+/*
+grabber.js css
+*/
+.grabber {cursor: grab !important; user-select: none !important;}
+  .grabbed {cursor: grabbing !important;}
+
+/*
+main "next" button => the arrow
+*/
+#next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% auto !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
+  #next, #next div {border-radius: 50%;}
+  #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer;}
+  #next.away {right: -40vh !important;}
+@keyframes firefly {
+  0% {transform: translate(-40%, -60%) rotate(0deg) scale(1);}
+  20% {transform: translate(-55%, -40%) rotate(5deg) scale(1.05);}
+  40% {transform: translate(-45%, -45%) rotate(-2deg) scale(0.99);}
+  60% {transform: translate(-50%, -60%) rotate(3deg) scale(1.1);}
+  80% {transform: translate(-60%, -40%) rotate(-7deg) scale(0.86);}
+  100% {transform: translate(-40%, -60%) rotate(0deg) scale(1);}
+}
+
+
+/*
+main page div that contains all pluggable content
++ fadein, fadeout animations
+*/
+.pg {width: 100vw; height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; display: block; transition: 0.5s ease;}
+  .fadeIn {transform: translate(-50%, -50%) scale(1.1); opacity: 0;}
+  .fadeOut {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}
+    .fadeOut video {opacity: 0;}
+
+
+/*
+script to screen page setup (half+half screen)
+*/
+.halfScreen {width: 100%; height: 50%; position: absolute; left: 0; overflow-y: auto; overflow-x: hidden; text-align: center; user-select: none;}
+  .halfScreen.top {top: 0; font-size: 3vh;}
+  .halfScreen.top::-webkit-scrollbar-thumb {background: transparent;}
+    .halfScreen.top p {width: calc(100% - 20vh); padding: 10vh;}
+  .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh; font-style: italic;}
+    .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); transition: 0.5s ease;} /* width: 100vw; height: auto; */
+
+
+/*
+text content (blank page with custom text)
+*/
+.text {width: calc(100% - 6vh); height: calc(100% - 6vh); position: absolute; font-size: 10vh; padding: 3vh;}
+
+
+/*
+video controls => play, pause, end, mute, sound buttons
+*/
+.controls {position: absolute; top: calc(51.5vh); left: 2.5vh; z-index: 100; user-select: none;}
+  .controls div {background: transparent; color: white; font-size: 5vh; outline: none; border: none; transition: all 0.25s ease; float: left;}
+    .controls div:hover {transform: translateX(-0.5vh); cursor: pointer; color: blueviolet;}
+    #stop, #end, #mute {display: none;}
+    #end {padding-right: 0.3vh;}
+  #mute, #sound {padding-right: 1.5vh; margin-top: -0.1vh; transform: rotate(180deg);}
+    #mute:hover, #sound:hover {transform: translateX(-0.5vh) rotate(180deg);}
+
+
+/*
+loading of video (in the middle of screen)
+*/
+.loadingStep {position: absolute; top: calc(50% - 0.45vh); left: 0; height: 0.5vh; width: 100%; background: blue; z-index: 101;}
+  .loadingStep.loading {background: linear-gradient(to right, transparent 90%, red 10%); background-size: 200% 100%; animation: loading 2s infinite; animation-delay: -0.2s;}
+  @keyframes loading { 0% {background-position: 220% 0%;} 100% {background-position: 80% 0%;} }
+
+
+/*
+script+video progress bar (horizontal line in the middle of screen)
+*/
+.progress {position: absolute; top: calc(50% - 0.45vh); left: 0; height: 0.5vh; width: 0; background: black; z-index: 101; transition: 0.1s ease;}
+
+
+
+@media (max-aspect-ratio: 1/1) {
+
+  .text {font-size: 5vh;}
+  /* #next {top: 75%;} */
+
+}
