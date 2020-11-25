@@ -25,12 +25,19 @@ grabber.js css
 .grabber {cursor: grab !important; user-select: none !important;}
   .grabbed {cursor: grabbing !important;}
 
+
 /*
-main "next" button => the arrow
+loading for between pages
+*/
+#loading {position: absolute; top: 0; left: 0; height: 0.5vh; width: 100%; z-index: 1001; background: linear-gradient(to right, transparent 90%, black 10%); background-size: 200% 100%; animation: loading 2s infinite; animation-delay: -0.2s;}
+
+
+/*
+main button "next" => the arrow
 */
 #next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% auto !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
   #next, #next div {border-radius: 50%;}
-  #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer;}
+  #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer; filter: hue-rotate(45deg);}
   #next.away {right: -40vh !important;}
 @keyframes firefly {
   0% {transform: translate(-40%, -60%) rotate(0deg) scale(1);}
@@ -55,10 +62,15 @@ main page div that contains all pluggable content
 /*
 script to screen page setup (half+half screen)
 */
-.halfScreen {width: 100%; height: 50%; position: absolute; left: 0; overflow-y: auto; overflow-x: hidden; text-align: center; user-select: none;}
+.halfScreen {width: 100%; height: 50%; position: absolute; left: 0; overflow-y: hidden; overflow-x: hidden; text-align: center; user-select: none;}
   .halfScreen.top {top: 0; font-size: 3vh;}
-  .halfScreen.top::-webkit-scrollbar-thumb {background: transparent;}
-    .halfScreen.top p {width: calc(100% - 20vh); padding: 10vh;}
+  .halfScreen.top.scrollable {overflow-y: auto;}
+      .halfScreen.top::-webkit-scrollbar-thumb {background: transparent;}
+      .halfScreen.top::-webkit-scrollbar {width: 0 !important;}
+    .halfScreen.top p {width: calc(100% - 40vh); padding: 5vh 20vh;}
+    .halfScreen.top h1 {font-weight: normal;}
+    .halfScreen.top table {margin: 0 auto; text-align: center; font-size: 3vh; border-collapse: collapse;}
+      .halfScreen.top table tr td {padding: 0.5vh 5vh; width: calc(100% / 3);}
   .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh; font-style: italic;}
     .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); transition: 0.5s ease;} /* width: 100vw; height: auto; */
 
@@ -72,9 +84,9 @@ text content (blank page with custom text)
 /*
 video controls => play, pause, end, mute, sound buttons
 */
-.controls {position: absolute; top: calc(51.5vh); left: 2.5vh; z-index: 100; user-select: none;}
+.controls {position: absolute; display: none; top: calc(51.5vh); left: 2.5vh; z-index: 100; user-select: none;}
   .controls div {background: transparent; color: white; font-size: 5vh; outline: none; border: none; transition: all 0.25s ease; float: left;}
-    .controls div:hover {transform: translateX(-0.5vh); cursor: pointer; color: blueviolet;}
+    .controls div:hover {transform: translateX(-0.5vh); cursor: pointer; text-shadow: 0 0 4vh white;}
     #stop, #end, #mute {display: none;}
     #end {padding-right: 0.3vh;}
   #mute, #sound {padding-right: 1.5vh; margin-top: -0.1vh; transform: rotate(180deg);}
@@ -82,10 +94,22 @@ video controls => play, pause, end, mute, sound buttons
 
 
 /*
+title
+*/
+#title {position: absolute; display: none; color: white; mix-blend-mode: exclusion; margin-left: -1vh; font-size: 3vh; user-select: none;}
+
+
+/*
+scroll me info-helper
+*/
+#scrollMe {display: none; z-index: -10; width: 10vh; height: 10vh; position: absolute; top: 25vh; left: 7vh; transform: translate(-50%, -50%); background: url('/data/scrollme.png') center center; background-size: cover;}
+
+
+/*
 loading of video (in the middle of screen)
 */
 .loadingStep {position: absolute; top: calc(50% - 0.45vh); left: 0; height: 0.5vh; width: 100%; background: blue; z-index: 101;}
-  .loadingStep.loading {background: linear-gradient(to right, transparent 90%, red 10%); background-size: 200% 100%; animation: loading 2s infinite; animation-delay: -0.2s;}
+  .loadingStep.loading {background: linear-gradient(to right, transparent 90%, red 10%); background-size: 200% 100%; animation: loading 2s infinite; animation-delay: -1.4s;}
   @keyframes loading { 0% {background-position: 220% 0%;} 100% {background-position: 80% 0%;} }
 
 
@@ -95,10 +119,23 @@ script+video progress bar (horizontal line in the middle of screen)
 .progress {position: absolute; top: calc(50% - 0.45vh); left: 0; height: 0.5vh; width: 0; background: black; z-index: 101; transition: 0.1s ease;}
 
 
+/*
+loading dots
+*/
+.wait span {animation: wait 1s infinite;}
+  .wait span:nth-child(2) {animation-delay: 0.33s;}
+  .wait span:nth-child(3) {animation-delay: 0.66s;}
+@keyframes wait { 80% {opacity: 0;} 81% {opacity: 1;} }
 
+
+/*
+mobile version adjustments
+*/
 @media (max-aspect-ratio: 1/1) {
 
   .text {font-size: 5vh;}
-  /* #next {top: 75%;} */
+  #scrollMe {opacity: 0.5;}
+  .halfScreen.top p {width: calc(100% - 20vh); padding: 5vh 10vh;}
+  #next {right: -7vh !important;}
 
 }

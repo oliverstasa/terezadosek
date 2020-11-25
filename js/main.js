@@ -29,6 +29,7 @@ def vars
 window.playState = 'stop';
 window.muteState = 'mute';
 window.scriptAbilities = false;
+window.loadingPage = false;
 window.moveTimeout;
 
 
@@ -57,7 +58,8 @@ on mouse move make buttons visible
 $(document).on('mousemove touch touchmove', function(e){
 
   var next = $('#next'),
-      controls = $('.controls');
+      controls = $('.controls'),
+      scrollMe = $('#scrollMe');
 
     // each time cursor moves, timeout is cleared
     clearTimeout(window.moveTimeout);
@@ -67,6 +69,7 @@ $(document).on('mousemove touch touchmove', function(e){
 
       next.removeClass('away');
       controls.fadeIn();
+      scrollMe.stop(true, false).fadeIn();
 
     // if cursor is not on controls or next button, set timeout to hide them
     } else if ($(e.target).parent().attr('class') != 'controls' && $(e.target).parent().attr('id') != 'next') {
@@ -74,6 +77,7 @@ $(document).on('mousemove touch touchmove', function(e){
       window.moveTimeout = setTimeout(function(){
         next.addClass('away');
         controls.fadeOut();
+        scrollMe.stop(true, false).fadeOut();
       }, 2000);
 
     }
@@ -114,6 +118,40 @@ $(document).on('click touch', '#mute', function(){
   document.querySelector('video').muted = true;
   $('#mute').hide();
   $('#sound').show();
+});
+
+
+
+/*
+showing title for div with title
+*/
+$(document).on('mouseenter', '.title', function(e){
+
+  var div = $(this),
+      title = div.attr('dataTitle'),
+      win = {'w': $(window).width(),
+             'h': $(window).height()},
+      pos = div.offset();
+
+      if (!$('#title').length) {
+        $('body').append('<div id="title"></div>');
+      } else {
+        $('#title').html('');
+      }
+
+      $('#title').css({top: pos.top+win.h/100*7.5, left: pos.left})
+                 .html(title)
+                 .stop(true, false)
+                 .fadeIn();
+
+
+});
+$(document).on('mouseleave', '.title', function(e){
+
+  $('#title').stop(true, false).fadeOut(500, function(){
+    $(this).remove();
+  });
+
 });
 
 
@@ -289,7 +327,7 @@ $(document).on('wheel mousedown touchstart', '#script', function(){
 });
 
 
-$(document).on('scroll wheel touchmove', '#script', function(){
+$(document).on('scroll wheel touchmove', '#script', function(e){
 
 
   if (window.selfHandle) {
@@ -308,6 +346,25 @@ $(document).on('scroll wheel touchmove', '#script', function(){
 
 
       // console.log(scriptLen, scriptPos, scriptPercent, videoLen, timeSetup, timeSetupFloor);
+
+      // if there is scrollme button, remove it
+      if ($('#scrollMe').length && !$('#scrollMe').hasClass('onMyWay')) {
+
+        var scrollMe = $('#scrollMe');
+        scrollMe.addClass('onMyWay');
+
+        // remove from session
+        $.post('/php/scrollMe.php', {'scrolled': 'true'}, function(res){
+
+          // remove from html
+          scrollMe.fadeOut(500, function(){
+            scrollMe.remove();
+          });
+
+        });
+
+      }
+
 
 
       // set width of "progress bar"
@@ -331,6 +388,11 @@ $(document).on('scroll wheel touchmove', '#script', function(){
         $('#stop, #end').hide();
       }
 
+
+  } else {
+
+    // nothing ever happens
+    e.preventDefault();
 
   }
 
@@ -372,16 +434,17 @@ export function changeNextButton(action) {
     case 'out':
 
       // animates next button away
-      next.css({right: '20vh', 'transform': 'scale(0.9)', opacity: 0});
+      next.css({right: '20vh', opacity: 0}); // 'transform': 'scale(0.9)'
 
     break;
     case 'in':
 
       // make new colors in next button
-      $('#next').css({'background-image': 'linear-gradient(to right, '+newHex('light')+' 0%, '+newHex('random')+' 51%, '+newHex('dark')+' 100%)'});
+      $('#next').css({'background-image': 'radial-gradient(circle at 100%, '+newHex('dark')+' 0%, '+newHex('random')+' 51%, '+newHex('light')+' 100%)'});
+                                        // linear-gradient to right                 light                                             dark
 
       // animates next button back in
-      next.css({right: '0', 'transform': 'scale(1)', opacity: 1});
+      next.css({right: 0, opacity: 1}); // 'transform': 'scale(1)'
 
     break;
 
@@ -395,6 +458,7 @@ function newHex(type){
   switch (type) {
     case 'random':
       return '#'+Math.floor(Math.random()*16777215).toString(16);
+      //return 'blue';
     break;
     case 'light':
       var letters = '9ABCDEF'.split('');
@@ -408,7 +472,12 @@ function newHex(type){
   if (type != 'random') {
     var color = '';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random()*letters.length)];
+        // ?? keep / delete ??
+        if (i == 2 || i == 3) {
+          color += Math.floor(Math.random()*4);
+        } else {
+          color += letters[Math.floor(Math.random()*letters.length)];
+        }
     }
     return '#'+color;
   }
@@ -416,20 +485,64 @@ function newHex(type){
 }
 
 
+/*
+cool effect for next button
+*/
+/*
+$(document).on('mouseover', '#next', function(e){
+
+  var button = $(this),
+      curPos = {'x': e.pageX,
+                'y': e.pageY};
+
+      console.log(curPos);
+
+});
+*/
+
+
 
 /*
-loading... eh
+loading
 */
-export function loading(action) {
+export function loading(e) {
 
-  switch (action) {
+  switch (e) {
+
+    // start loading bar
     case 'on':
 
+      // if no loading has started
+      if (!window.loadingPage) {
+
+        // create and show loading bar
+        $('body').prepend('<div id="loading"></div>');
+          $('#loading').stop(true, false).fadeIn(100);
+
+          // set safety time for page reload to end the misery
+          window.loadingPage = setTimeout(function(){
+            window.location.reload;
+          }, 60*1000);
+
+      }
+
     break;
+
+    // end loading
     case 'off':
 
-    break;
-  }
+      // clear safety timeout
+      clearTimeout(window.loadingPage);
+      window.loadingPage = false;
 
+      // remove loading bar
+      $('#loading').stop(true, false).fadeOut(500,
+      function() {
+        $('#loading').remove();
+      });
+
+    break;
+
+  }
 
 }

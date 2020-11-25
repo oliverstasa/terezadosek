@@ -2,7 +2,7 @@
 ou shit router!
 lady gaga would aprove
 */
-import {scriptToScreen, changeNextButton} from './main.js';
+import {scriptToScreen, loading, changeNextButton} from './main.js';
 
 
 
@@ -17,6 +17,7 @@ export function page(url) {
 
 
   // start some loading bar?
+  loading('on');
 
 
 
@@ -46,6 +47,10 @@ export function page(url) {
 
     // check for errors
     if (!obj.error.length) {
+
+      console.log(res);
+
+    }
 
 
 
@@ -132,29 +137,40 @@ export function page(url) {
                               // set loaded video to video element, and fade it in
                               video.src = vid;
                               // video duration global var
-                              $(video).on('loadedmetadata', function(){
+                              $(video).one('loadedmetadata', function(){
                                 window.videoDur = video.duration;
                               });
 
 
 
                                   // check if video can 100% play through
-                                  $(video).on('canplaythrough', function(){
+                                  $(video).one('canplaythrough', function(){
 
                                     // show video, hide loading
                                     $('.loadingText').remove();
                                     $('video').removeClass('fadeOut');
 
                                     // unlock abilities
-                                    $('#script').addClass('grabber');
+                                    $('#script').addClass('scrollable grabber');
                                     window.scriptAbilities = true;
 
+                                    // show controls + scrollme info-button
+                                    $('.controls, #scrollMe').fadeIn();
+
+
+                                    // auto-hide icons when video starts to play
+                                    if (!$('#next').hasClass('away')) {
+                                      $(document).trigger('mousemove');
+                                    }
 
 
                                         // countdown before animation + playback starts
                                         $('.loadingStep').removeClass('loading').animate({width: 0}, 2000, 'linear', function(){
                                           if (!window.selfHandle) {
+
+                                            // play script+video
                                             scriptToScreen('play');
+
                                           }
                                         });
 
@@ -166,13 +182,20 @@ export function page(url) {
                       }
 
                       // if error
-                      req.onerror = function() {
+                      req.onerror = function(e) {
+                        console.log(e);
                         alert('error while loading video, sorry not my fault');
                       }
 
                       // make preload happen
                       req.send();
 
+
+              } else {
+
+                // this happens when scriptToScreen has still set window.scriptAbilities to true
+                // but never the less - it seems to have no impact, co i leave the error in comment
+                // alert('error, scriptToScreen has not ended properly');
 
               }
 
@@ -194,6 +217,9 @@ export function page(url) {
         // animate in new page
         setTimeout(function(){
 
+            // end loading
+            loading('off');
+
             // remove old page div
             $('.oldPage').remove();
             // animate in the new page with css
@@ -210,12 +236,15 @@ export function page(url) {
 
 
       // if there was data error during fetching (php)
+      // took care of this other way
+      /*
       } else {
 
         console.log(res);
         alert('data error');
 
       }
+      */
 
 
 
