@@ -62,3 +62,48 @@ function lang($cs, $en) {
   }
 
 }
+
+
+
+/*
+json to html
+*/
+function json2html($data) {
+
+  $data = json_decode($data, true);
+  $ress = '';
+
+    foreach ($data['blocks'] as $key => $value) {
+
+      switch ($value['type']) {
+
+        case 'paragraph':
+          $content = preg_replace('/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:$1">$1</a>', $value['data']['text']);
+          // $ress .= '<p>'.$content.'</p>';
+          $ress .= $content.'<br>';
+        break;
+
+        case 'header':
+          $ress .= '<h1>'.$value['data']['text'].'</h1>';
+        break;
+
+        case 'table':
+          $ress .= '<table>';
+          $tabulka = $value['data']['content'];
+          for ($t = 0; $t < sizeof($tabulka); $t++) {
+            $ress .= '<tr>';
+            for ($d = 0; $d < sizeof($tabulka[$t]); $d++) {
+              $ress .= '<td>'.$tabulka[$t][$d].'</td>';
+            }
+            $ress .= '</tr>';
+          }
+          $ress .= '</table>';
+        break;
+
+      }
+
+    }
+
+    return $ress;
+
+}

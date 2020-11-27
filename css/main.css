@@ -18,6 +18,11 @@ html, body {margin: 0; padding: 0; width: 100%; height: 100%; font-family: regul
 *::-webkit-scrollbar {width: 0.5vh; height: 0.5vh; background: transparent;}
 *::-webkit-scrollbar-thumb {background: black;}
 
+::selection {background: black; color: white;}
+
+a, a:hover, a:visited {color: blue; text-decoration: none; cursor: pointer;}
+  a:hover {text-decoration: underline;}
+
 
 /*
 grabber.js css
@@ -37,7 +42,7 @@ main button "next" => the arrow
 */
 #next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% auto !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
   #next, #next div {border-radius: 50%;}
-  #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer; filter: hue-rotate(45deg);}
+  #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer; /* filter: hue-rotate(45deg); */}
   #next.away {right: -40vh !important;}
 @keyframes firefly {
   0% {transform: translate(-40%, -60%) rotate(0deg) scale(1);}
@@ -96,7 +101,7 @@ video controls => play, pause, end, mute, sound buttons
 /*
 title
 */
-#title {position: absolute; display: none; color: white; mix-blend-mode: exclusion; margin-left: -1vh; font-size: 3vh; user-select: none;}
+#title {position: absolute; display: none; color: white; background: black; /* mix-blend-mode: exclusion; */ margin-left: -2vh; padding: 0 1vh; font-size: 3vh; user-select: none;}
 
 
 /*
@@ -107,6 +112,7 @@ scroll me info-helper
 
 /*
 loading of video (in the middle of screen)
++ loading text - before video is loaded
 */
 .loadingStep {position: absolute; top: calc(50% - 0.45vh); left: 0; height: 0.5vh; width: 100%; background: blue; z-index: 101;}
   .loadingStep.loading {background: linear-gradient(to right, transparent 90%, red 10%); background-size: 200% 100%; animation: loading 2s infinite; animation-delay: -1.4s;}
@@ -126,6 +132,33 @@ loading dots
   .wait span:nth-child(2) {animation-delay: 0.33s;}
   .wait span:nth-child(3) {animation-delay: 0.66s;}
 @keyframes wait { 80% {opacity: 0;} 81% {opacity: 1;} }
+
+
+/*
+inputs
+*/
+input, select, .editorjs {background: #e9e9e9; font-family: regular, courier; font-size: 3vh; width: 70vh; max-width: 85vw !important; border: none; padding: 1vh; border-bottom: 0.5vh solid blue; transition: 0.5s ease; outline: 0;}
+  input[type="checkbox"] {width: 5vh; height: 5vh; margin-left: 32.5vh;}
+  .editorjs {height: 20vh; overflow-y: auto; width: calc(70vh - 2vh);}
+    .editorjs table tr td, .editorjs table {border-collapse: collapse; border-color: black; height: 10vh;}
+  input[type="submit"] {background: blue; cursor: pointer; color: white;}
+  input[type="submit"]:hover {background: black;}
+
+
+/*
+admin styles
+*/
+.admin {overflow-y: auto !important;}
+.row {font-size: 3vh; margin-bottom: 5vh;}
+  .rNum, .rPos, .rType {float: left;}
+  .rNum {width: 7vh;}
+  .rPos {width: 10vh;}
+  .rType {width: 20vh;}
+.popisek {margin-right: 3vh; margin-top: 5vh; width: 70vh; max-width: 85vw !important; text-align: center;}
+  #scriptToScreen, #textContent {display: none;}
+  #scriptToScreen .editorjs {height: 80vh;}
+  .uploadVideoForm {display: none;}
+.tc-table__wrap {height: auto !important;}
 
 
 /*

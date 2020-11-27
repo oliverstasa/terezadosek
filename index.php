@@ -17,6 +17,20 @@
   <script src="/js/jq.js" type="text/javascript"></script>
   <script src="/js/fce.js?v=0.alfa" type="module"></script>
 
+  <?php
+  session_start();
+  $_SESSION['lang'] = 'cs';
+
+  if (strpos($_SERVER['REQUEST_URI'], "admin")) {
+    echo '
+    <script src="https://famufest.cz/js/editor_json/dist/editor.js"></script>
+    <script src="https://famufest.cz/js/editor_json/dist/table.js"></script>
+    <script src="https://famufest.cz/js/editor_json/dist/header.js"></script>
+    <script src="/js/fce.admin.js?v=0.alfa" type="module"></script>';
+  }
+
+  ?>
+
 </head>
 <body>
 

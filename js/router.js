@@ -61,7 +61,7 @@ export function page(url) {
       var newUrl = location.protocol+'//'+location.host+''+url;
 
       // set tab title
-      document.title = obj.pageTitle;
+      document.title = 'Tereza Dosek — '+obj.pageTitle;
       // set url in adress bar
       window.history.pushState("object or string", obj.pageTitle, newUrl);
 
@@ -157,6 +157,9 @@ export function page(url) {
                                     // show controls + scrollme info-button
                                     $('.controls, #scrollMe').fadeIn();
 
+                                    // cancel interval for changing loading text-lines
+                                    clearInterval(window.longLoadingText);
+
 
                                     // auto-hide icons when video starts to play
                                     if (!$('#next').hasClass('away')) {
@@ -191,10 +194,35 @@ export function page(url) {
                       req.send();
 
 
+
+                      // long loading = show message
+                      var kecy = ['bare with me', 'it\'s comming', 'hope you have a nice day', 'nice haircut btw', 'just a moment'];
+
+                          window.longLoadingText = setInterval(function(){
+
+                            // pick randomly new text line
+                            var rand = false;
+                            // diferent than before
+                            while (!rand || $('#bareWithMe').hasClass('k'+rand)) {
+                              rand = Math.floor(Math.random()*kecy.length);
+                            }
+
+                            // set new text line
+                            $('.loadingText').fadeOut(250, function(){
+
+                              $('#bareWithMe').html(kecy[rand]).removeAttr('class').addClass('k'+rand);
+                              $(this).fadeIn();
+
+                            });
+
+                          }, 4000);
+
+
+
               } else {
 
                 // this happens when scriptToScreen has still set window.scriptAbilities to true
-                // but never the less - it seems to have no impact, co i leave the error in comment
+                // but never the less - it seems to have no impact, so i leave the error in comment
                 // alert('error, scriptToScreen has not ended properly');
 
               }
@@ -229,6 +257,10 @@ export function page(url) {
             $('#next').attr('href', obj.hrefTo);
             // make next button come back from abys
             changeNextButton('in');
+
+            if (obj.headder == 'admin') {
+              $('.pg').addClass('admin');
+            }
 
         // end of timeout
         }, delay);

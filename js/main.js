@@ -162,8 +162,11 @@ control over scriptToScreen actions
 */
 $(document).on('keydown', function(e){
 
+  // only for page with #script
+  if ($('#script').length) {
+
     var keyCode = (e.keyCode?e.keyCode:e.which);
-    switch(keyCode) {
+    switch (keyCode) {
       // spacebar
       case 32:
         // prevent space from scrolling script
@@ -186,6 +189,8 @@ $(document).on('keydown', function(e){
       break;
     }
 
+  }
+
     // so that it doesnt interfer
     // e.preventDefault();
 
@@ -201,7 +206,7 @@ export function scriptToScreen(state){
   // if video is loaded
   if (window.scriptAbilities) {
 
-  switch(state) {
+  switch (state) {
 
     // start script rolling and play video
     case 'play':
@@ -221,8 +226,10 @@ export function scriptToScreen(state){
 
       // remove loading
       $('.loadingStep').stop(true, false).clearQueue().fadeOut();
+
       // prevents function to intercepting video playback with
       window.selfHandle = false;
+
       // set video to same position (thats discutable...)
       document.querySelector('video').currentTime = videoPosTime;
       // start video playback
@@ -289,8 +296,10 @@ export function scriptToScreen(state){
       }
 
     break;
+
   }
 
+  // endif video is loaded
   }
 
 }
@@ -301,6 +310,14 @@ export function scriptToScreen(state){
 sets width of "progress bar" for other functions
 */
 function progressBar(scriptLen, scriptPos) {
+
+  if (scriptLen == 'auto' || scriptPos == 'auto') {
+
+    var script = $('#script'),
+        scriptLen = script[0].scrollHeight-script.height(),
+        scriptPos = script.scrollTop();
+
+  }
 
   var scriptPercent = scriptPos/scriptLen*100;
 
@@ -457,14 +474,14 @@ function newHex(type){
   // random, light or dark color
   switch (type) {
     case 'random':
-      return '#'+Math.floor(Math.random()*16777215).toString(16);
-      //return 'blue';
+      // return '#'+Math.floor(Math.random()*16777215).toString(16);
+      return 'blue';
     break;
     case 'light':
       var letters = '9ABCDEF'.split('');
     break;
     case 'dark':
-      var letters = '0123456'.split('');
+      var letters = '2345678'.split('');
     break;
   }
 
@@ -474,7 +491,7 @@ function newHex(type){
     for (var i = 0; i < 6; i++) {
         // ?? keep / delete ??
         if (i == 2 || i == 3) {
-          color += Math.floor(Math.random()*4);
+          color += Math.floor(Math.random()*2);
         } else {
           color += letters[Math.floor(Math.random()*letters.length)];
         }

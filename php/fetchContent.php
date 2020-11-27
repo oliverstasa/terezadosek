@@ -12,20 +12,26 @@ include './fce.php';
 // vars
 $json = array();
 $error = array();
+$headder = 'page';
 
 $conn = sqlConn();
 
 
 
-// if url is posted = get the link
-if (isset($_POST['url']) && $_POST['url'] != '/' && $_POST['url'] != '') {
+if (isset($_POST['url']) && substr($_POST['url'], 0, 6) == '/admin') {
 
-  $sql = 'SELECT id AS mainId, type, '.lang('title', 'title_en').' AS title, '.lang('content', 'content_en').' AS content, videoUrl, (SELECT link FROM page WHERE id > mainId AND active = 1 LIMIT 1) AS next, (SELECT link FROM page WHERE active = 1 ORDER BY id LIMIT 1) AS first FROM page WHERE link = "'.substr($_POST['url'], 1).'" AND active = 1 LIMIT 1';
+  $headder = 'admin';
+  include './admin.php';
+
+// if url is posted = get the link
+} else if (isset($_POST['url']) && $_POST['url'] != '/' && $_POST['url'] != '') {
+
+  $sql = 'SELECT id AS mainId, type, '.lang('title', 'title_en').' AS title, '.lang('content', 'content_en').' AS content, videoUrl, (SELECT link FROM page WHERE id > mainId AND active = 1 LIMIT 1) AS next, (SELECT link FROM page WHERE active = 1 ORDER BY id LIMIT 1) AS first FROM page WHERE link = "'.substr($_POST['url'], 1).'"'.($_SESSION['admin']?'':' AND active = 1').' LIMIT 1';
 
 // if url is not posted, get first active page
 } else {
 
-  $sql = 'SELECT id AS mainId, type, '.lang('title', 'title_en').' AS title, '.lang('content', 'content_en').' AS content, videoUrl, (SELECT link FROM page WHERE id > mainId AND active = 1 LIMIT 1) AS next FROM page WHERE active = 1 ORDER BY id LIMIT 1';
+  $sql = 'SELECT id AS mainId, type, '.lang('title', 'title_en').' AS title, '.lang('content', 'content_en').' AS content, videoUrl, (SELECT link FROM page WHERE id > mainId AND active = 1 LIMIT 1) AS next FROM page '.($_SESSION['admin']?'':'WHERE active = 1').' ORDER BY id LIMIT 1';
 
 }
 
@@ -34,6 +40,9 @@ if (isset($_POST['url']) && $_POST['url'] != '/' && $_POST['url'] != '') {
 /*
 db
 */
+// if sql = not admin
+if (isset($sql)) {
+
 // run sql
 $ress = mysqli_query($conn, $sql);
 // if there is any result
@@ -45,7 +54,7 @@ if (mysqli_num_rows($ress) > 0) {
   // setup main vars
   $pageType = $pg['type'];
   $pageTitle = $pg['title'];
-  $html = $pg['content'];
+  $html = json2html($pg['content']);
 
   if ($pg['videoUrl']) {
     $videoUrl = $pg['videoUrl'];
@@ -61,10 +70,21 @@ if (mysqli_num_rows($ress) > 0) {
 } else {
 
   array_push($error, 'hell of a bad sql error');
+  $headder = 'error';
   $pageType = 'textContent';
-  $pageTitle = 'problem';
+  $pageTitle = 'Error';
   $hrefTo = '';
-  $html = '<b>we\'ve got an error, this url is not active!</b><br>run or continue to next page';
+  $html = 'Sorry, this url hides no content.<br>Continue to next page!';
+
+}
+
+// no sql = admin
+} else {
+
+  $pageType = 'textContent';
+  $pageTitle = 'Admin';
+  $hrefTo = '';
+  $html = $adminHtml;
 
 }
 
@@ -82,7 +102,7 @@ switch ($pageType) {
     $contentHtml = '
     <div class="pg fadeIn">
       <div class="text">
-        <span style="color: #ddd;">Tereza Dosek:</span><br>
+        <span style="color: #e9e9e9;">Tereza Dosek</span><br>
         '.$html.'
       </div>
     </div>
@@ -111,7 +131,7 @@ switch ($pageType) {
           <div id="sound" class="title" dataTitle="'.lang('PŘEHRÁT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'">🕪</div>
         </div>
         <div class="halfScreen bot">
-          <span class="loadingText">'.lang('stahuje se video', 'fetching content').'<span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
+          <span class="loadingText"><span id="bareWithMe">'.lang('stahuje se video', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
           <video muted preload="auto" class="fadeOut">
           </video>
         </div>
@@ -128,7 +148,7 @@ switch ($pageType) {
 build the JSON object
 */
 // page headder
-array_push($json, '"headder": "page"');
+array_push($json, '"headder": "'.$headder.'"');
 // page type
 array_push($json, '"pageType": "'.$pageType.'"');
 // link to next page
@@ -138,7 +158,7 @@ array_push($json, '"pageTitle": "'.$pageTitle.'"');
 
 // video URL
 if (isset($videoUrl)) {
-  array_push($json, '"videoUrl": "/data/'.$videoUrl.'"');
+  array_push($json, '"videoUrl": "/data/video/'.$videoUrl.'"');
 }
 
 // html
