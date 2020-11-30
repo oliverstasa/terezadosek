@@ -2,7 +2,7 @@
 ou shit router!
 lady gaga would aprove
 */
-import {scriptToScreen, loading, changeNextButton} from './main.js';
+import {scriptToScreen, loading, changeNextButton, lang} from './main.js';
 
 
 
@@ -187,7 +187,8 @@ export function page(url) {
                       // if error
                       req.onerror = function(e) {
                         console.log(e);
-                        alert('error while loading video, sorry not my fault');
+                        // this sometimes happens, when page skipping, so i decided to ignore the error, because it works anyway
+                        //alert('error while loading video, sorry not my fault');
                       }
 
                       // make preload happen
@@ -195,25 +196,40 @@ export function page(url) {
 
 
 
-                      // long loading = show message
-                      var kecy = ['bare with me', 'it\'s comming', 'hope you have a nice day', 'nice haircut btw', 'just a moment'];
+                      // long loading = toggle messages
+                      var itt = 0,
+                          tooLongText = lang('pomalé připojení, může to trvat věčně', 'slow connection, it may take forever'),
+                          kecy = lang(['blíží se to', 'už to bude', 'doufám, že máte hezký den', 'btw pěkný účes', 'ještě chvíli', 'tip na vaření: koláč'],
+                                      ['bear with me', 'it\'s comming', 'hope you have a nice day', 'nice haircut btw', 'just a moment', 'cooking tip: pie']);
 
                           window.longLoadingText = setInterval(function(){
 
                             // pick randomly new text line
-                            var rand = false;
+                            var rand = false,
+                                kec = false;
                             // diferent than before
-                            while (!rand || $('#bareWithMe').hasClass('k'+rand)) {
+                            while (!rand || $('#bearWithMe').hasClass('k'+rand)) {
                               rand = Math.floor(Math.random()*kecy.length);
+                            }
+
+                            // not waiting too long = rand kec
+                            if (itt < 20) {
+                              kec = lang(kecy[rand]);
+                            // yes, throw an error
+                            } else {
+                              kec = tooLongText;
+                              clearInterval(window.longLoadingText);
                             }
 
                             // set new text line
                             $('.loadingText').fadeOut(250, function(){
 
-                              $('#bareWithMe').html(kecy[rand]).removeAttr('class').addClass('k'+rand);
+                              $('#bearWithMe').html(kec).removeAttr('class').addClass('k'+rand);
                               $(this).fadeIn();
 
                             });
+
+                            itt++;
 
                           }, 4000);
 

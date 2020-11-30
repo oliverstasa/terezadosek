@@ -113,7 +113,7 @@ $(document).on('submit', '.uploadVideoForm', function(e){
                }
 
             },
-            error: function(e) {console.log(e); alert('error');}
+            error: function(e) {console.log(e); alert('general error');}
     });
 
   // return f*cking false!

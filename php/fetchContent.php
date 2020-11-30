@@ -131,7 +131,7 @@ switch ($pageType) {
           <div id="sound" class="title" dataTitle="'.lang('PŘEHRÁT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'">🕪</div>
         </div>
         <div class="halfScreen bot">
-          <span class="loadingText"><span id="bareWithMe">'.lang('stahuje se video', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
+          <span class="loadingText"><span id="bearWithMe">'.lang('stahuje se obsah', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
           <video muted preload="auto" class="fadeOut">
           </video>
         </div>

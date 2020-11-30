@@ -502,22 +502,6 @@ function newHex(type){
 }
 
 
-/*
-cool effect for next button
-*/
-/*
-$(document).on('mouseover', '#next', function(e){
-
-  var button = $(this),
-      curPos = {'x': e.pageX,
-                'y': e.pageY};
-
-      console.log(curPos);
-
-});
-*/
-
-
 
 /*
 loading
@@ -563,3 +547,35 @@ export function loading(e) {
   }
 
 }
+
+
+
+/*
+switch language
+*/
+export function lang(cz, en) {
+
+  switch($('html').attr('lang')) {
+    case 'cz': return cz; break;
+    default: case 'en': return en; break;
+  }
+
+}
+
+
+
+/*
+cool effect for next button
+disabled for now
+*/
+/*
+$(document).on('mouseover', '#next', function(e){
+
+  var button = $(this),
+      curPos = {'x': e.pageX,
+                'y': e.pageY};
+
+      console.log(curPos);
+
+});
+*/

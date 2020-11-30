@@ -1,8 +1,15 @@
 <?php
 
 
-// $adminHtml on the end... i know its shitty but low budget, just gets it done...
+
+/*
+this file is requied in other file
+save result to var $adminHtml => gets handled elsewhere
+i know its shitty but low budget, just gets it done...
+*/
 if ($_SESSION['admin'] == 1) {
+
+
 
   // fce.php is already set
   // $conn is already set
@@ -41,7 +48,10 @@ if ($_SESSION['admin'] == 1) {
   switch ($url[2]) {
 
 
-
+    /*
+    add or edit page
+    form
+    */
     case 'add': case 'edit':
 
       $edit = ($url[2] == 'edit' && isset($url[3]))?true:false;
@@ -89,7 +99,7 @@ if ($_SESSION['admin'] == 1) {
 
       $adminHtml .=  '</script>';
 
-      $adminHtml .= '<a href="/admin">↶</a> '.$headding.' page';
+      $adminHtml .= '<a href="/admin">↶</a> '.$headding.' page'.(($edit)?' <i>'.lang($e['title'], $e['title_en']).'</i>':'');
       $adminHtml .= '<div class="row">';
       $adminHtml .= '<form method="post" id="adminPageForm"'.($edit?' pId="'.$e['id'].'"':'').'>';
       $adminHtml .= '<div class="popisek">PUBLIC</div>';
@@ -128,24 +138,30 @@ if ($_SESSION['admin'] == 1) {
 
       $adminHtml .= '<br>';
       $adminHtml .= '<input type="submit" value="'.$headding.'">';
+      $adminHtml .= '<br>';
       $adminHtml .= '</form>';
       $adminHtml .= '</div>';
 
     break;
 
 
-
+    /*
+    logout
+    */
     case 'logout':
 
+      // unset admin session
       $_SESSION['admin'] = 0;
 
-      $adminHtml .= 'Logout ✓';
+      $adminHtml .= 'Logged out ✓<br>click the arrow';
 
     break;
 
 
 
-    // show all pages
+    /*
+    default: show all pages
+    */
     default:
 
 
@@ -231,7 +247,9 @@ if ($_SESSION['admin'] == 1) {
 
 
 
-// if not logged => login page
+/*
+if not logged in => login page
+*/
 } else {
 
   $adminHtml = 'Admin<br><form method="post" id="loginForm"><input type="password" name="login" placeholder="sezame, otevři se" style="margin-bottom: 2vh;"><br><input type="submit" value="log in"></form>';

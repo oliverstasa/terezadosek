@@ -1,11 +1,21 @@
-<html>
+<?php
+
+
+/*
+set initial sessions
+*/
+include './php/ini.php';
+
+
+?>
+<html lang="<?php echo $_SESSION['lang']; ?>">
 <head>
 
   <meta charset="utf-8">
 
   <title>Tereza Dosek</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="">
+  <meta name="keywords" content="screenplay, scénáristka, Tereza Dosek, FAMU">
+  <meta name="description" content="gets text rekt">
 
   <meta name="robots" content="all">
   <meta name="author" content="Oliver Staša">
@@ -18,8 +28,6 @@
   <script src="/js/fce.js?v=0.alfa" type="module"></script>
 
   <?php
-  session_start();
-  $_SESSION['lang'] = 'cs';
 
   if (strpos($_SERVER['REQUEST_URI'], "admin")) {
     echo '
