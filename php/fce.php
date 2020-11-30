@@ -80,7 +80,7 @@ function json2html($data) {
         case 'paragraph':
           $content = preg_replace('/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:$1">$1</a>', $value['data']['text']);
           // $ress .= '<p>'.$content.'</p>';
-          $ress .= $content.'<br>';
+          $ress .= '<p>'.$content.'</p>';
         break;
 
         case 'header':

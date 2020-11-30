@@ -11,12 +11,12 @@ if ($_SESSION['admin'] == 1) {
 
 
   include './fce.php';
-
   $conn = sqlConn();
 
 
 
 
+  // name generator
   function randName() {
       $rand = false;
       $ch = 'TEREZADOSEKterezadosek';
@@ -27,6 +27,7 @@ if ($_SESSION['admin'] == 1) {
       }
       return $rand;
   }
+
 
 
 
@@ -54,12 +55,12 @@ if ($_SESSION['admin'] == 1) {
              if (mysqli_query($conn, $dotaz)) {
                echo $newName.'.mp4';
              } else {
-               echo 'error'.implode("<br>", error_get_last());
+               echo 'error: '.implode("<br>", error_get_last());
              }
 
       // unable to upload it
       } else {
-        echo 'error'.implode("<br>", error_get_last());
+        echo 'error: '.implode("<br>", error_get_last());
       }
 
     // is not .mp4
@@ -70,7 +71,7 @@ if ($_SESSION['admin'] == 1) {
 
   // file not in $_FILES
   } else {
-    echo 'error'.implode("<br>", error_get_last());
+    echo 'error:'.implode("<br>", error_get_last());
   }
 
 

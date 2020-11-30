@@ -90,27 +90,27 @@ $(document).on('submit', '.uploadVideoForm', function(e){
             processData: false,
             success: function(res) {
 
-             if (res.indexOf('error') != -1) {
+               if (res.indexOf('error') != -1) {
 
-                console.log(res);
-                alert('chyba uploadu');
+                  console.log(res);
+                  alert('chyba uploadu');
 
-             } else {
+               } else {
 
-               switch (res) {
-                 case 'invalid':
-                    alert('video musí být ve formátu .mp4');
-                 break;
-                 default:
-                    if (res) {
-                      fileDiv.attr('href', '/data/video/'+res).html(res);
-                    } else {
-                      alert('chyba v uložení souboru');
-                    }
-                 break;
+                 switch (res) {
+                   case 'invalid':
+                      alert('video musí být ve formátu .mp4');
+                   break;
+                   default:
+                      if (res) {
+                        fileDiv.attr('href', '/data/video/'+res).html(res);
+                      } else {
+                        alert('chyba v uložení souboru');
+                      }
+                   break;
+                 }
+
                }
-
-             }
 
             },
             error: function(e) {console.log(e); alert('error');}

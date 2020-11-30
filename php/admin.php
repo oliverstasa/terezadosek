@@ -162,7 +162,7 @@ if ($_SESSION['admin'] == 1) {
         $adminHtml .= '<div class="row">';
         $adminHtml .= '<a href="/admin/add">[Add page]</a>&emsp;';
         $adminHtml .= '<a href="/admin/logout">[🔒]</a>&emsp;';
-        $adminHtml .= '<span class="title" style="cursor: help;" dataTitle="codec: h264<br>format: .mp4<br>optimal size: 30mb<br>max size: 100mb<br>optimal bitrate: 8mbps<br>max bitrate: 12mbps<br>keyframe-distance: 5 (!)">[?] Video format</span>';
+        $adminHtml .= '<span class="title" style="cursor: help;" dataTitle="codec: h264<br>format: .mp4<<br>optimal size: 20mb<br>max size: 100mb<br>optimal bitrate: 8mbps<br>max bitrate: 12mbps<br>keyframe-distance: 5 (!)">[?] Video format</span>';
         $adminHtml .= '<br></div>';
 
 

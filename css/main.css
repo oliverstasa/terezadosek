@@ -87,6 +87,14 @@ text content (blank page with custom text)
 
 
 /*
+text handeling
+*/
+#script p {padding: 5vh 15vh; width: calc(100% - 30vh); margin: 0;}
+  #script h1 {margin-top: 20vh;}
+.text p {padding: 0; margin: 0;}
+
+
+/*
 video controls => play, pause, end, mute, sound buttons
 */
 .controls {position: absolute; display: none; top: calc(51.5vh); left: 2.5vh; z-index: 100; user-select: none;}
