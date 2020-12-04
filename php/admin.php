@@ -64,6 +64,7 @@ if ($_SESSION['admin'] == 1) {
         $ress = mysqli_query($conn, $sqlAdmin);
         $e = mysqli_fetch_array($ress);
 
+        // they're switched because i need them to show different % at row 85 & 90
         $data = array($e['content_en'], $e['content']);
 
       }
@@ -96,7 +97,6 @@ if ($_SESSION['admin'] == 1) {
         $adminHtml .= '});';
 
       }
-
       $adminHtml .=  '</script>';
 
       $adminHtml .= '<a href="/admin">↶</a> '.$headding.' page'.(($edit)?' <i>'.lang($e['title'], $e['title_en']).'</i>':'');

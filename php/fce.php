@@ -82,15 +82,21 @@ function json2html($data) {
 
       switch ($value['type']) {
 
+
+        // paragraph
         case 'paragraph':
           $content = preg_replace('/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:$1">$1</a>', $value['data']['text']);
           $ress .= '<p>'.$content.'</p>';
         break;
 
+
+        // header
         case 'header':
           $ress .= '<h1>'.$value['data']['text'].'</h1>';
         break;
 
+
+        // table
         case 'table':
           $ress .= '<table>';
           $tabulka = $value['data']['content'];
@@ -103,6 +109,8 @@ function json2html($data) {
           }
           $ress .= '</table>';
         break;
+
+
 
       }
 

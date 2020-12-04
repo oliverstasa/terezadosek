@@ -40,12 +40,40 @@ on content load
 $(window).on('load', function(){
 
 
+  // get internet speed coeficient to window.downloadSpeed
+  var startTime = (new Date()).getTime(),
+      // the t=time is important so that the file doesnt get cached
+      file = '/data/4kb.png?t='+startTime,
+      size = 4096,
+      dump = new Image();
 
-  // adress from bar
-  var url = window.location.pathname;
-  // page function
-  page(url);
+      // set dump image src
+      dump.src = file;
+      // when dump image is finaly after 20ms loaded :D
+      dump.onload = function() {
 
+          // get time difference
+          var endTime = (new Date()).getTime(),
+              downloadTime = (endTime-startTime)/1000,
+              timeCoef = 1/downloadTime;
+
+          // calculate amount of kilobites you can download per sec
+          window.kbps = (size*8/1024*timeCoef).toFixed(2);
+          console.log(window.kbps);
+
+
+
+              /*
+              NOW start the web
+              */
+              // adress from bar
+              var url = window.location.pathname;
+              // page function
+              page(url);
+
+
+
+      }
 
 
 });
@@ -191,8 +219,8 @@ $(document).on('keydown', function(e){
 
   }
 
-    // so that it doesnt interfer
-    // e.preventDefault();
+  // global prevent
+  // e.preventDefault();
 
 });
 
@@ -239,7 +267,12 @@ export function scriptToScreen(state){
                      {duration: (window.videoDur-videoPosTime)*1000,
                        step: function(){progressBar(scriptLen, $(this).scrollTop());},
                        easing: 'linear',
-                       complete: function(){scriptToScreen('end');}
+                       complete: function(){
+                         // make the last step for progress bar
+                         progressBar(scriptLen, $(this).scrollTop());
+                         // stop the fun
+                         scriptToScreen('end');
+                       }
                      });
 
     break;
@@ -457,7 +490,7 @@ export function changeNextButton(action) {
     case 'in':
 
       // make new colors in next button
-      $('#next').css({'background-image': 'radial-gradient(circle at 100%, '+newHex('dark')+' 0%, '+newHex('random')+' 51%, '+newHex('light')+' 100%)'});
+      // $('#next').css({'background-image': 'radial-gradient(circle at 100%, '+newHex('dark')+' 0%, '+newHex('random')+' 51%, '+newHex('light')+' 100%)'});
                                         // linear-gradient to right                 light                                             dark
 
       // animates next button back in
@@ -553,10 +586,10 @@ export function loading(e) {
 /*
 switch language
 */
-export function lang(cz, en) {
+export function lang(cs, en) {
 
   switch($('html').attr('lang')) {
-    case 'cz': return cz; break;
+    case 'cs': return cs; break;
     default: case 'en': return en; break;
   }
 

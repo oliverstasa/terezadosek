@@ -41,6 +41,8 @@ loading for between pages
 main button "next" => the arrow
 */
 #next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% auto !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
+/* new background? */
+#next {background: radial-gradient(circle at 5%/*16.5%*/, white 15%, black 100%); background-size: 100% !important !important;}
   #next, #next div {border-radius: 50%;}
   #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer; /* filter: hue-rotate(45deg); */}
   #next.away {right: -40vh !important;}

@@ -2,12 +2,14 @@
 admin fce
 super secret
 lady gaga
+***
+all php acts within a session, so... sorry
 */
 
 
 
 // import
-import {page} from './router.js';
+import {page, lang} from './router.js';
 
 
 
@@ -24,10 +26,23 @@ $(document).on('submit', '#loginForm', function(e){
   // send password for check
   $.post('/php/login.php', {login: pass}, function(res){
 
-    if (res == 1) {
-      page('/admin');
-    } else {
-      alert('wrong');
+    switch(res) {
+
+      // success
+      case 1:
+        page('/admin');
+      break;
+
+      // overflow 5+ attempts
+      case 'overflow':
+        $('#loginForm').html(lang('příliž mnoho přístupů', 'too many attempts'));
+      break;
+
+      // any other result
+      default:
+        alert('wrong');
+      break;
+
     }
 
   });

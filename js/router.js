@@ -198,9 +198,12 @@ export function page(url) {
 
                       // long loading = toggle messages
                       var itt = 0,
+                          videoSize = obj.videoSize,
                           tooLongText = lang('pomalé připojení, může to trvat věčně', 'slow connection, it may take forever'),
                           kecy = lang(['blíží se to', 'už to bude', 'doufám, že máte hezký den', 'btw pěkný účes', 'ještě chvíli', 'tip na vaření: koláč'],
                                       ['bear with me', 'it\'s comming', 'hope you have a nice day', 'nice haircut btw', 'just a moment', 'cooking tip: pie']);
+
+                          console.log(videoSize/window.kbps+'s');
 
                           window.longLoadingText = setInterval(function(){
 
@@ -214,7 +217,7 @@ export function page(url) {
 
                             // not waiting too long = rand kec
                             if (itt < 20) {
-                              kec = lang(kecy[rand]);
+                              kec = kecy[rand];
                             // yes, throw an error
                             } else {
                               kec = tooLongText;

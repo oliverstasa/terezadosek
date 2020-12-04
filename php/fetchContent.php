@@ -128,7 +128,7 @@ switch ($pageType) {
           <div id="stop" class="title" dataTitle="'.lang('ZASTAVIT <i>[MEZERNÍK]</i>', 'STOP <i>[SPACE BAR]</i>').'">◼</div>
           <div id="end" class="title" dataTitle="'.lang('OPAKOVAT <i>[MEZERNÍK]</i>', 'REPEAT <i>[SPACE BAR]</i>').'">↺</div>
           <div id="mute" class="title" dataTitle="'.lang('ZTLUMIT <i>[M]</i>', 'MUTE <i>[M]</i>').'">🕨</div>
-          <div id="sound" class="title" dataTitle="'.lang('PŘEHRÁT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'">🕪</div>
+          <div id="sound" class="title" dataTitle="'.lang('ZAPNOUT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'">🕪</div>
         </div>
         <div class="halfScreen bot">
           <span class="loadingText"><span id="bearWithMe">'.lang('stahuje se obsah', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
@@ -157,8 +157,10 @@ array_push($json, '"hrefTo": "/'.$hrefTo.'"');
 array_push($json, '"pageTitle": "'.$pageTitle.'"');
 
 // video URL
+// video SIZE in Kb
 if (isset($videoUrl)) {
   array_push($json, '"videoUrl": "/data/video/'.$videoUrl.'"');
+  array_push($json, '"videoSize": "'.(filesize('/data/video/'.$videoUrl)/1024).'"');
 }
 
 // html

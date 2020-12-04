@@ -35,4 +35,7 @@ if (!isset($_SESSION['lang'])) {
 /*
 set default user session
 */
-$_SESSION['admin'] = 0;
+if (!isset($_SESSION['admin'])) {
+  $_SESSION['admin'] = 0;
+  $_SESSION['attempts'] = 0;
+}
