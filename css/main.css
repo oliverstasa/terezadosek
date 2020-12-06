@@ -60,10 +60,11 @@ main button "next" => the arrow
 main page div that contains all pluggable content
 + fadein, fadeout animations
 */
-.pg {width: 100vw; height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; display: block; transition: 0.5s ease;}
-  .fadeIn {transform: translate(-50%, -50%) scale(1.1); opacity: 0;}
-  .fadeOut {transform: translate(-50%, -50%) scale(0.9); opacity: 0;}
+.pg {width: 100vw; height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; filter: grayscale(0%); display: block; transition: 0.5s ease;}
+  .fadeIn {transform: translate(-50%, -50%) scale(1.1) !important; opacity: 0 !important;}
+  .fadeOut {transform: translate(-50%, -50%) scale(0.9) !important; opacity: 0 !important;}
     .fadeOut video {opacity: 0;}
+    .oldPage {opacity: 0.5; filter: grayscale(100%);}
 
 
 /*
@@ -76,16 +77,19 @@ script to screen page setup (half+half screen)
       .halfScreen.top::-webkit-scrollbar {width: 0 !important;}
     .halfScreen.top p {width: calc(100% - 40vh); padding: 5vh 20vh; margin: 0;}
     .halfScreen.top h1 {font-weight: normal; margin-top: 20vh;}
-    .halfScreen.top table {margin: 0 auto; text-align: center; font-size: 3vh; border-collapse: collapse;}
-      .halfScreen.top table tr td {padding: 0.5vh 5vh; width: calc(100% / 3);}
-  .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh; font-style: italic;}
-    .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); transition: 0.5s ease;} /* width: 100vw; height: auto; */
+    .halfScreen.top .table {margin: 0 auto; text-align: center; font-size: 3vh; margin-bottom: 10vh;}
+      .halfScreen.top .table .tr {display: list-item;}
+      .halfScreen.top .table .tr .td {display: inline-block; padding: 0.5vh 5vh; width: 30vh; vertical-align: top;}
+  .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh;}
+    .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; transition: 0.5s ease; z-index: 99;} /* width: 100vw; height: auto; */
+    .halfScreen.bot .loadingText {font-style: italic;}
+    .halfScreen.bot #countdown {position: absolute; top: 0; left: 0; width: 100%; height: 50vh; background: linear-gradient(white, transparent); transition: all 1s linear;}
 
 
 /*
 text content (blank page with custom text)
 */
-.text {width: calc(100% - 6vh); height: calc(100% - 6vh); position: absolute; font-size: 10vh; padding: 3vh;}
+.text {width: calc(100% - 6vh); height: calc(100% - 6vh); position: absolute; font-size: 10vh; padding: 3vh; overflow-y: auto;}
 
 
 /*
@@ -109,7 +113,7 @@ video controls => play, pause, end, mute, sound buttons
 /*
 title
 */
-#title {position: absolute; display: none; color: white; background: black; /* mix-blend-mode: exclusion; */ margin-left: -2vh; padding: 0 1vh; font-size: 3vh; user-select: none;}
+#title {position: absolute; display: none; color: white; background: black; /* mix-blend-mode: exclusion; */ margin-left: -2vh; padding: 0 1vh; font-size: 3vh; user-select: none; border-radius: 1vh;}
 
 
 /*
@@ -166,7 +170,8 @@ admin styles
   #scriptToScreen, #textContent {display: none;}
   #scriptToScreen .editorjs {height: 80vh;}
   .uploadVideoForm {display: none;}
-.tc-table__wrap {height: auto !important;}
+  .row .title {font-style: italic;}
+.tc-table__wrap {height: auto !important; border-color: black !important;}
 
 
 /*
@@ -178,5 +183,9 @@ mobile version adjustments
   #scrollMe {opacity: 0.5;}
   .halfScreen.top p {width: calc(100% - 20vh); padding: 5vh 10vh;}
   #next {right: -7vh !important;}
+  .halfScreen.top .table .tr {display: inline-block;}
+  .halfScreen.top .table .tr .td {display: list-item; list-style: none; height: 10vh;}
+    .halfScreen.top .table .tr:first-child .td {width: 20vw;}
+    .halfScreen.top .table .tr:nth-child(2) .td {width: 40vw;}
 
 }

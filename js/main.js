@@ -30,7 +30,9 @@ window.playState = 'stop';
 window.muteState = 'mute';
 window.scriptAbilities = false;
 window.loadingPage = false;
+window.reqVideo = false;
 window.moveTimeout;
+window.kbps;
 
 
 
@@ -40,40 +42,14 @@ on content load
 $(window).on('load', function(){
 
 
-  // get internet speed coeficient to window.downloadSpeed
-  var startTime = (new Date()).getTime(),
-      // the t=time is important so that the file doesnt get cached
-      file = '/data/4kb.png?t='+startTime,
-      size = 4096,
-      dump = new Image();
-
-      // set dump image src
-      dump.src = file;
-      // when dump image is finaly after 20ms loaded :D
-      dump.onload = function() {
-
-          // get time difference
-          var endTime = (new Date()).getTime(),
-              downloadTime = (endTime-startTime)/1000,
-              timeCoef = 1/downloadTime;
-
-          // calculate amount of kilobites you can download per sec
-          window.kbps = (size*8/1024*timeCoef).toFixed(2);
-          console.log(window.kbps);
+  // adress from bar
+  var url = window.location.pathname;
+  // page function
+  page(url);
 
 
-
-              /*
-              NOW start the web
-              */
-              // adress from bar
-              var url = window.location.pathname;
-              // page function
-              page(url);
-
-
-
-      }
+  // trigger mousemove to hide arrow in its timeout
+  $(document).trigger('mousemove');
 
 
 });
@@ -106,7 +82,7 @@ $(document).on('mousemove touch touchmove', function(e){
         next.addClass('away');
         controls.fadeOut();
         scrollMe.stop(true, false).fadeOut();
-      }, 2000);
+      }, 1500);
 
     }
 
@@ -174,7 +150,7 @@ $(document).on('mouseenter', '.title', function(e){
 
 
 });
-$(document).on('mouseleave', '.title', function(e){
+$(document).on('mouseleave wheel', '.title', function(e){
 
   $('#title').stop(true, false).fadeOut(500, function(){
     $(this).remove();
@@ -243,10 +219,12 @@ export function scriptToScreen(state){
       window.playState = 'play';
 
       var script = $('#script'),
+          firstP = script.find('p').first().position().top,
           scriptLen = script[0].scrollHeight-script.height(),
           scriptPos = script.scrollTop(),
           // videoPosTime is not calculated acuuratly
-          videoPosTime = window.videoDur/100*(scriptPos/scriptLen*100);
+          videoPosTime = window.videoDur/100*(scriptPos/scriptLen*100),
+          scrollFirst = 0;
 
       // button display/hide
       $('#play, #end').hide();
@@ -262,18 +240,40 @@ export function scriptToScreen(state){
       document.querySelector('video').currentTime = videoPosTime;
       // start video playback
       document.querySelector('video').play();
+
+      // if scrollPos is above "first scene line", scroll to it
+      if (script.scrollTop() < firstP/3-scriptPos) {
+        scrollFirst = 1000;
+        script.animate({scrollTop: firstP/3},
+                       {duration: scrollFirst,
+                        step: function(){
+                           // move the progress bar
+                           progressBar(scriptLen, $(this).scrollTop());
+                        },
+                        easing: 'easeInSine'
+                       });
+      }
+
       // starts animating div according to video playback position
-      script.animate({scrollTop: scriptLen},
-                     {duration: (window.videoDur-videoPosTime)*1000,
-                       step: function(){progressBar(scriptLen, $(this).scrollTop());},
-                       easing: 'linear',
-                       complete: function(){
-                         // make the last step for progress bar
-                         progressBar(scriptLen, $(this).scrollTop());
-                         // stop the fun
-                         scriptToScreen('end');
-                       }
-                     });
+      setTimeout(function(){
+
+        script.stop(true, true)
+              .animate({scrollTop: scriptLen},
+                       {duration: (window.videoDur-videoPosTime)*1000-scrollFirst,
+                         step: function(){
+                           // move the progress bar
+                           progressBar(scriptLen, $(this).scrollTop());
+                         },
+                         easing: 'linear',
+                         complete: function(){
+                           // make the last step for progress bar
+                           progressBar(scriptLen, $(this).scrollTop());
+                           // stop the fun
+                           scriptToScreen('end');
+                         }
+                       });
+
+      }, scrollFirst);
 
     break;
 

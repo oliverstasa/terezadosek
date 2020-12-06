@@ -73,11 +73,13 @@ if ($_SESSION['admin'] == 1) {
       for ($i = 1; $i <= 4; $i++) {
 
         $adminHtml .= 'var editor_'.$i.' = new EditorJS({
-                       holder: \'editor_'.$i.'\',
+                       holder: \'editor_'.$i.'\'';
+                       if ($i >= 3) {$adminHtml .= ',
                        tools: {
                          header: {class: Header, config: {levels: [1], defaultLevel: 1} },
-                         table: {class: Table, inlineToolbar: true, config: {rows: 1, cols: 2} }
+                         table: {class: Table, inlineToolbar: true, config: {rows: 2, cols: 1} }
                        }';
+                       }
 
         if ($edit) {
           switch ($e['type']) {
@@ -110,7 +112,7 @@ if ($_SESSION['admin'] == 1) {
       $adminHtml .= '<option value="scriptToScreen"'.(($edit && $e['type'] == 'scriptToScreen')?' selected':'').'>VIDEO</option>';
       $adminHtml .= '</select>';
       $adminHtml .= '<br>';
-      $adminHtml .= '<div class="popisek">LINK</div>';
+      $adminHtml .= '<div class="popisek">LINK <span class="title" style="cursor: help;" dataTitle="https://terezadosek.com/[LINK]<br><br><center>example: experiment<br>=><br>https://terezadosek.com/experiment</center>">[?] What\'s link</span></div>';
       $adminHtml .= '<input type="text" name="link" placeholder="terezadosek.com/[LINK]" maxlength="30" value="'.(($edit)?$e['link']:'').'">';
       $adminHtml .= '<br>';
       $adminHtml .= '<div class="popisek">TITLE CZ</div>';
@@ -121,7 +123,9 @@ if ($_SESSION['admin'] == 1) {
       $adminHtml .= '<br>';
 
       $adminHtml .= '<div id="textContent">';
-      $adminHtml .= '<div class="popisek">TEXT CZ</div>';
+      $adminHtml .= '<div class="popisek">';
+      $adminHtml .= 'TEXT CZ <span class="title" style="cursor: help;" dataTitle="no headings, no tables<br>just text in one paragraph<br>tips:<br>*new paragraph: [enter] (don\'t do this here)<br>*new line inside paragraph: [shift]+[enter] (do this!)">[?] How to text page</span>';
+      $adminHtml .= '</div>';
       $adminHtml .= '<div id="editor_1" class="editorjs" name="textContent"></div>';
       $adminHtml .= '<br>';
       $adminHtml .= '<div class="popisek">TEXT EN</div>';
@@ -129,7 +133,9 @@ if ($_SESSION['admin'] == 1) {
       $adminHtml .= '</div>';
 
       $adminHtml .= '<div id="scriptToScreen">';
-      $adminHtml .= '<div class="popisek">SCRIPT CZ</div>';
+      $adminHtml .= '<div class="popisek">';
+      $adminHtml .= 'SCRIPT CZ <span class="title" style="cursor: help;" dataTitle="HEADING (movie title)<br><i>(new paragraph)</i><br>TABLE (Director, Camera, Screenplay)<br><i>(new paragraph)</i><br>scene 1 (<b>bold</b>)<br><i>(new paragraph)</i><br>text<br><i>(new paragraph)<br>scene 2 (<b>bold</b>)<br><i>(new paragraph)</i><br>text<br><i>(new paragraph)<br>scene 3 (<b>bold</b>)<br>...<br>tips:<br>*new paragraph: [enter]<br>*new line inside paragraph: [shift]+[enter]">[?] How to write script</span>';
+      $adminHtml .= '</div>';
       $adminHtml .= '<div id="editor_3" class="editorjs" name="scriptContent"></div>';
       $adminHtml .= '<br>';
       $adminHtml .= '<div class="popisek">SCRIPT EN</div>';
@@ -152,6 +158,7 @@ if ($_SESSION['admin'] == 1) {
 
       // unset admin session
       $_SESSION['admin'] = 0;
+      $_SESSION['attempts'] = 0;
 
       $adminHtml .= 'Logged out ✓<br>click the arrow';
 
@@ -178,7 +185,7 @@ if ($_SESSION['admin'] == 1) {
         $adminHtml .= '<div class="row">';
         $adminHtml .= '<a href="/admin/add">[Add page]</a>&emsp;';
         $adminHtml .= '<a href="/admin/logout">[🔒]</a>&emsp;';
-        $adminHtml .= '<span class="title" style="cursor: help;" dataTitle="codec: h264<br>format: .mp4<<br>optimal size: 20mb<br>max size: 100mb<br>optimal bitrate: 8mbps<br>max bitrate: 12mbps<br>keyframe-distance: 5 (!)">[?] Video format</span>';
+        $adminHtml .= '<span class="title" style="cursor: help;" dataTitle="codec: h264<br>format: .mp4<br>optimal size: 10mb<br>max size: 100mb<br>optimal resolution: 720p<br>max resolution: 1080p<br>optimal bitrate: 3mbps<br>max bitrate: 10mbps<br>keyframe-distance: 5 (!)">[?] Video format</span>';
         $adminHtml .= '<br></div>';
 
 

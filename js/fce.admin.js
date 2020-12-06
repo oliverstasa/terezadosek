@@ -9,7 +9,8 @@ all php acts within a session, so... sorry
 
 
 // import
-import {page, lang} from './router.js';
+import {page} from './router.js';
+import {lang} from './main.js';
 
 
 
@@ -26,10 +27,12 @@ $(document).on('submit', '#loginForm', function(e){
   // send password for check
   $.post('/php/login.php', {login: pass}, function(res){
 
+    console.log(res);
+
     switch(res) {
 
       // success
-      case 1:
+      case '1':
         page('/admin');
       break;
 

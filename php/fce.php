@@ -97,6 +97,7 @@ function json2html($data) {
 
 
         // table
+        /*
         case 'table':
           $ress .= '<table>';
           $tabulka = $value['data']['content'];
@@ -108,6 +109,19 @@ function json2html($data) {
             $ress .= '</tr>';
           }
           $ress .= '</table>';
+        break;
+        */
+        case 'table':
+          $ress .= '<div class="table">';
+          $tabulka = $value['data']['content'];
+          for ($t = 0; $t < sizeof($tabulka); $t++) {
+            $ress .= '<div class="tr">';
+            for ($d = 0; $d < sizeof($tabulka[$t]); $d++) {
+              $ress .= '<div class="td">'.$tabulka[$t][$d].'</div>';
+            }
+            $ress .= '</div>';
+          }
+          $ress .= '</div>';
         break;
 
 

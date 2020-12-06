@@ -23,6 +23,15 @@ export function page(url) {
 
   // stop everything
   $('.loadingStep').stop(true, false).clearQueue().fadeOut();
+  // calcel request if any
+  if (window.reqVideo) {
+    // cancel request
+    window.reqVideo.abort();
+    // set request to false, so this doesnt go arround
+    window.reqVideo = false;
+    // and cancel loading interval
+    clearInterval(window.longLoadingText);
+  }
 
 
 
@@ -46,9 +55,9 @@ export function page(url) {
 
 
     // check for errors
-    if (!obj.error.length) {
+    if (obj.error.length) {
 
-      console.log(res);
+      console.log(res, obj.error);
 
     }
 
@@ -93,6 +102,7 @@ export function page(url) {
           case 'textContent':
 
 
+
               // disable any video-lasting animations
               $('.loadingStep, #script').stop(true, false).clearQueue().fadeOut();
               window.scriptAbilities = false;
@@ -116,125 +126,189 @@ export function page(url) {
 
 
 
-                      // video preload - create request
-                      var req = new XMLHttpRequest();
 
-                      // load whole video in the request
-                      req.open('GET', obj.videoUrl, true);
-                      req.responseType = 'blob';
+                  // get internet speed coeficient to window.downloadSpeed
+                  var dump = new Image(),
+                      startTime = (new Date()).getTime(),
+                      // the t=time is important so that the file doesnt get cached
+                      //file = '/data/4kb.png?t='+startTime,
+                      //size = 4096,
+                      file = '/data/28kb.png?t='+startTime,
+                      size = 28672;
 
-                      // when loaded
-                      req.onload = function() {
-                        // stat is 200 = ok
-                         if (this.status === 200) {
+                      // set dump image src
+                      dump.src = file;
+                      // when dump image is finaly after 20ms loaded :D
+                      dump.onload = function() {
+
+                          // get time difference
+                          var endTime = (new Date()).getTime(),
+                              downloadTime = (endTime-startTime)/1000;
+
+                          // calculate amount of kilobites you can download per sec
+                          // size*8/1024 = size of file in kbit, 1/downloadTime = fractions in 1s
+                          window.kbps = (size*8/1024*(1/downloadTime)).toFixed(2);
+
+                          // destroy the image
+                          dump = null;
 
 
-                           // get new video url
-                            var videoBlob = this.response,
-                                vid = URL.createObjectURL(videoBlob),
-                                video = document.querySelector('video');
-
-                              // set loaded video to video element, and fade it in
-                              video.src = vid;
-                              // video duration global var
-                              $(video).one('loadedmetadata', function(){
-                                window.videoDur = video.duration;
-                              });
+                          // now start loading the video...
 
 
 
-                                  // check if video can 100% play through
-                                  $(video).one('canplaythrough', function(){
+                          // video preload - create request
+                          window.reqVideo = new XMLHttpRequest();
 
-                                    // show video, hide loading
-                                    $('.loadingText').remove();
-                                    $('video').removeClass('fadeOut');
+                          // note when download started
+                          var videoStartTime = (new Date()).getTime();
 
-                                    // unlock abilities
-                                    $('#script').addClass('scrollable grabber');
-                                    window.scriptAbilities = true;
+                          // load whole video in the request
+                          window.reqVideo.open('GET', obj.videoUrl+'?t='+videoStartTime, true);
+                          window.reqVideo.responseType = 'blob';
 
-                                    // show controls + scrollme info-button
-                                    $('.controls, #scrollMe').fadeIn();
+                          // when loaded
+                          window.reqVideo.onload = function() {
+                             // stat is 200 = ok
+                             if (this.status === 200) {
 
-                                    // cancel interval for changing loading text-lines
+
+
+                                // get new video url
+                                var videoBlob = this.response,
+                                    vid = URL.createObjectURL(videoBlob),
+                                    video = document.querySelector('video');
+
+
+
+                                // set loaded video to video element
+                                video.src = vid;
+                                // video duration global var
+                                $(video).one('loadedmetadata', function(){
+                                  window.videoDur = video.duration;
+                                });
+
+
+
+                                      // check if video can 100% play through and fade it in
+                                      $(video).one('canplaythrough', function(){
+
+                                        // note when video downloading ended
+                                        var videoEndTime = (new Date()).getTime(),
+                                            videoLoadTime = (videoEndTime-videoStartTime)/1000;
+
+                                        console.log('load time: '+videoLoadTime+'s\naccuracy: '+(obj.videoSize/window.kbps/videoLoadTime));
+
+                                        // show video, hide loading
+                                        $('#countdown').css({height: 0, background: 'linear-gradient(blue, transparent)'}).delay(1000).queue(function(){$(this).remove().dequeue();});
+                                        $('.loadingText').fadeOut(500, function(){$(this).remove();});
+                                        $('video').removeClass('fadeOut');
+
+                                        // unlock abilities
+                                        $('#script').addClass('scrollable grabber');
+                                        window.scriptAbilities = true;
+
+                                        // show controls + scrollme info-button
+                                        $('.controls, #scrollMe').fadeIn();
+
+                                        // cancel interval for changing loading text-lines
+                                        clearInterval(window.longLoadingText);
+
+
+                                        // auto-hide icons when video starts to play
+                                        if (!$('#next').hasClass('away')) {
+                                          $(document).trigger('mousemove');
+                                        }
+
+
+                                            // countdown before animation + playback starts
+                                            $('.loadingStep').removeClass('loading').animate({width: 0}, 2000, 'linear', function(){
+                                              if (!window.selfHandle) {
+
+                                                // play script+video
+                                                scriptToScreen('play');
+
+                                              }
+                                            });
+
+
+
+                                      });
+
+                             }
+                          }
+
+                          // if error
+                          window.reqVideo.onerror = function(e) {
+                            console.log(e);
+                            // this sometimes happens, when page skipping, so i decided to ignore the error, because it works anyway
+                            //alert('error while loading video, sorry not my fault');
+                          }
+
+                          // make preload happen
+                          window.reqVideo.send();
+
+
+
+                          // loading = toggle messages
+                          var itt = 0,
+                              downloadTimeCalc = Math.round(obj.videoSize/window.kbps), //.toFixed(0)
+                              tooLongText = lang('pomalé připojení, může to trvat věčně', 'slow connection, it may take forever'),
+                              kecy = lang(['blíží se to', 'máte pěkný účes', 'ještě chvíli', 'tip na vaření: koláč'],
+                                          ['bear with me', 'you got nice haircut', 'just a moment', 'cooking tip: pie']);
+
+                              console.log('download time\nmy estimate: '+downloadTimeCalc+'s');
+
+                              window.longLoadingText = setInterval(function(){
+
+                                // each 5 sec change the text line
+                                if (itt % 5 == 0 && itt > 0) {
+
+                                  // pick randomly new text line
+                                  var rand = false,
+                                      kec = false;
+                                  // diferent than before
+                                  while (!rand || $('#bearWithMe').hasClass('k'+rand)) {
+                                    rand = Math.floor(Math.random()*kecy.length);
+                                  }
+
+                                  // not waiting too long = rand kec
+                                  if (itt < 20*4) {
+                                    kec = kecy[rand]
+                                  // yes, throw an error
+                                  } else {
+                                    kec = tooLongText;
                                     clearInterval(window.longLoadingText);
+                                  }
 
+                                  // set new text line
+                                  $('.loadingText').fadeOut(250, function(){
 
-                                    // auto-hide icons when video starts to play
-                                    if (!$('#next').hasClass('away')) {
-                                      $(document).trigger('mousemove');
-                                    }
-
-
-                                        // countdown before animation + playback starts
-                                        $('.loadingStep').removeClass('loading').animate({width: 0}, 2000, 'linear', function(){
-                                          if (!window.selfHandle) {
-
-                                            // play script+video
-                                            scriptToScreen('play');
-
-                                          }
-                                        });
-
-
+                                    $('#bearWithMe').html(kec).removeAttr('class').addClass('k'+rand);
+                                    $(this).fadeIn();
 
                                   });
 
-                         }
+                                }
+
+                                // calc height of coundown
+                                if ((downloadTimeCalc-itt) > 0) {
+                                  var countdownSec = downloadTimeCalc-itt;
+                                } else {
+                                  var countdownSec = 1;
+                                }
+                                // set height of coundown
+                                $('#countdown').css({height: ((countdownSec/downloadTimeCalc)*50)+'vh'});
+
+                                // add a itteration
+                                itt++;
+
+                              }, 1000);
+
+
+
+                      // end of onload dump image speed checker
                       }
-
-                      // if error
-                      req.onerror = function(e) {
-                        console.log(e);
-                        // this sometimes happens, when page skipping, so i decided to ignore the error, because it works anyway
-                        //alert('error while loading video, sorry not my fault');
-                      }
-
-                      // make preload happen
-                      req.send();
-
-
-
-                      // long loading = toggle messages
-                      var itt = 0,
-                          videoSize = obj.videoSize,
-                          tooLongText = lang('pomalé připojení, může to trvat věčně', 'slow connection, it may take forever'),
-                          kecy = lang(['blíží se to', 'už to bude', 'doufám, že máte hezký den', 'btw pěkný účes', 'ještě chvíli', 'tip na vaření: koláč'],
-                                      ['bear with me', 'it\'s comming', 'hope you have a nice day', 'nice haircut btw', 'just a moment', 'cooking tip: pie']);
-
-                          console.log(videoSize/window.kbps+'s');
-
-                          window.longLoadingText = setInterval(function(){
-
-                            // pick randomly new text line
-                            var rand = false,
-                                kec = false;
-                            // diferent than before
-                            while (!rand || $('#bearWithMe').hasClass('k'+rand)) {
-                              rand = Math.floor(Math.random()*kecy.length);
-                            }
-
-                            // not waiting too long = rand kec
-                            if (itt < 20) {
-                              kec = kecy[rand];
-                            // yes, throw an error
-                            } else {
-                              kec = tooLongText;
-                              clearInterval(window.longLoadingText);
-                            }
-
-                            // set new text line
-                            $('.loadingText').fadeOut(250, function(){
-
-                              $('#bearWithMe').html(kec).removeAttr('class').addClass('k'+rand);
-                              $(this).fadeIn();
-
-                            });
-
-                            itt++;
-
-                          }, 4000);
 
 
 
