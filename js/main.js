@@ -242,9 +242,9 @@ export function scriptToScreen(state){
       document.querySelector('video').play();
 
       // if scrollPos is above "first scene line", scroll to it
-      if (script.scrollTop() < firstP/3-scriptPos) {
+      if (script.scrollTop() < firstP/2-scriptPos) {
         scrollFirst = 1000;
-        script.animate({scrollTop: firstP/3},
+        script.animate({scrollTop: firstP/2},
                        {duration: scrollFirst,
                         step: function(){
                            // move the progress bar
