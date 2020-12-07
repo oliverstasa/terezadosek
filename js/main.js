@@ -219,7 +219,7 @@ export function scriptToScreen(state){
       window.playState = 'play';
 
       var script = $('#script'),
-          firstP = script.find('p').first().position().top,
+          firstP = script.find('p').first().position().top, // :eq(1)
           scriptLen = script[0].scrollHeight-script.height(),
           scriptPos = script.scrollTop(),
           // videoPosTime is not calculated acuuratly
