@@ -63,7 +63,8 @@ $(document).on('mousemove touch touchmove', function(e){
 
   var next = $('#next'),
       controls = $('.controls'),
-      scrollMe = $('#scrollMe');
+      scrollMe = $('#scrollMe'),
+      timeOut = 1500;
 
     // each time cursor moves, timeout is cleared
     clearTimeout(window.moveTimeout);
@@ -82,7 +83,7 @@ $(document).on('mousemove touch touchmove', function(e){
         next.addClass('away');
         controls.fadeOut();
         scrollMe.stop(true, false).fadeOut();
-      }, 1500);
+      }, timeOut);
 
     }
 
@@ -227,7 +228,10 @@ export function scriptToScreen(state){
           scrollFirst = 0;
 
       // button display/hide
-      $('#play, #end').hide();
+      if (!$('#next').hasClass('away')) {
+        $('#next').addClass('away');
+      }
+      $('#play, #end, #scrollMe').hide();
       $('#stop').show();
 
       // remove loading
@@ -243,7 +247,11 @@ export function scriptToScreen(state){
 
       // if scrollPos is above "first scene line", scroll to it
       if (script.scrollTop() < firstP/2-scriptPos) {
+
+        // delay the long scroll
         scrollFirst = 1000;
+
+        // quick-animate to the start of the script
         script.animate({scrollTop: firstP/2},
                        {duration: scrollFirst,
                         step: function(){
@@ -257,6 +265,7 @@ export function scriptToScreen(state){
       // starts animating div according to video playback position
       setTimeout(function(){
 
+        // start the long animation
         script.stop(true, true)
               .animate({scrollTop: scriptLen},
                        {duration: (window.videoDur-videoPosTime)*1000-scrollFirst,
@@ -293,6 +302,9 @@ export function scriptToScreen(state){
       document.querySelector('video').pause();
       // pause script playback
       $('#script, .loadingStep').stop(true, false).clearQueue();
+
+      // trigger mousemove => show controls
+      $(document).trigger('mousemove');
 
     break;
     case 'end':
