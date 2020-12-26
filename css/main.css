@@ -114,6 +114,8 @@ video controls => play, pause, end, mute, sound buttons
 title
 */
 #title {position: absolute; display: none; color: white; background: black; /* mix-blend-mode: exclusion; */ margin-left: -2vh; padding: 0 1vh; font-size: 3vh; user-select: none; border-radius: 1vh;}
+.hop {animation: 0.5s hop ease; animation-fill-mode: forwards;}
+@keyframes hop {0% {transform: scale(1);} 50% {transform: scale(1.2); background: blue;} 100% {transform: scale(1); background: blue;}}
 
 
 /*

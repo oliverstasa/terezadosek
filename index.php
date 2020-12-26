@@ -23,9 +23,10 @@ include './php/ini.php';
 
   <link rel="icon" href="/data/fav.png">
 
-  <link href="/css/main.css?v=0.alfa" rel="stylesheet">
+  <link href="/css/main.css?v=0.9" rel="stylesheet">
+  <?php if ($_SESSION['daytime'] == 'night') {echo '<link href="/css/night.css" rel="stylesheet">';} ?>
   <script src="/js/jq.js" type="text/javascript"></script>
-  <script src="/js/fce.js?v=0.alfa" type="module"></script>
+  <script src="/js/fce.js?v=0.9" type="module"></script>
 
   <?php
 

@@ -39,3 +39,17 @@ if (!isset($_SESSION['admin'])) {
   $_SESSION['admin'] = 0;
   $_SESSION['attempts'] = 0;
 }
+
+
+
+/*
+find out datetime
+*/
+$now = time();
+$sun = date_sun_info($now, '50.07', '14.41'); // LONG, LAT => for praha
+
+if ($now > $sun['sunrise'] && $now < $sun['sunset']) {
+  $_SESSION['daytime'] = 'day';
+} else {
+  $_SESSION['daytime'] = 'night';
+}

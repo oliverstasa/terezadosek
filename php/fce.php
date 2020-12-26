@@ -85,7 +85,7 @@ function json2html($data) {
 
         // paragraph
         case 'paragraph':
-          $content = preg_replace('/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:$1">$1</a>', $value['data']['text']);
+          $content = preg_replace('/([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a class="mailto title" href="mailto:$1" dataTitle="→ '.lang('Zkopírovat email', 'Copy email').'">$1</a>', $value['data']['text']);
           $ress .= '<p>'.$content.'</p>';
         break;
 

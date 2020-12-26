@@ -50,6 +50,26 @@ if ($_SESSION['admin'] == 1) {
       // upload it
       if (move_uploaded_file($_FILES['video']['tmp_name'], '../data/video/'.$newName.'.mp4')) {
 
+          // remove previous video file
+          $prevSql = 'SELECT videoUrl FROM page WHERE id = '.$_GET['id'];  
+          $prevQ = mysqli_query($conn, $prevSql);
+
+          // if there is a result
+          if (mysqli_num_rows($prevQ) > 0) {
+
+            $prev = mysqli_fetch_array($prevQ);
+
+            // if there is a previous file => remove the file
+            if ($prev['videoUrl']) {
+              $url = '../data/video/'.$prev['videoUrl'];
+              chmod($url, 0750);
+              unlink($url);
+            }
+
+          // previous video file is removed
+          }
+
+          // add new video file
           $dotaz = 'UPDATE page SET videoUrl = "'.$newName.'.mp4" WHERE id = '.$_GET['id'];
 
              if (mysqli_query($conn, $dotaz)) {

@@ -1,0 +1,6 @@
+
+html, body {background: black; color: white;}
+
+*::-webkit-scrollbar-thumb {background: white;}
+
+::selection {background: white; color: black;}

@@ -37,9 +37,9 @@ window.kbps;
 
 
 /*
-on content load
+on content load or popstate (browser navig)
 */
-$(window).on('load', function(){
+$(window).on('load popstate', function(){
 
 
   // adress from bar
@@ -143,7 +143,8 @@ $(document).on('mouseenter', '.title', function(e){
         $('#title').html('');
       }
 
-      $('#title').css({top: pos.top+win.h/100*7.5, left: pos.left})
+      $('#title').removeClass()
+                 .css({top: pos.top+win.h/100*7.5, left: pos.left})
                  .html(title)
                  .stop(true, false)
                  .fadeIn();
@@ -454,7 +455,7 @@ $(document).on('scroll wheel touchmove', '#script', function(e){
 /*
 navigation = on #next click listener
 */
-$(document).on('click touch', '#next', function(e){
+$(document).on('click touch', '#next', function(e){ 
 
   // send href to the page() function
   var link = $(this);
@@ -595,6 +596,30 @@ export function lang(cs, en) {
 
 }
 
+
+
+/*
+copy email
+*/
+$(document).on('click touch', '.mailto', function(e){
+  
+  // dont use a:href
+  e.preventDefault();
+
+  // vars
+  var mail = $(this).html(),
+      $temp = $("<input>");
+
+      // copy the mail to clipboard
+      $('body').append($temp);
+      $temp.val(mail).select();
+      document.execCommand("copy");
+      $temp.remove();
+
+  // show confirmation
+  $('#title').stop(true, true).html('→ '+lang('Zkopírováno!', 'Copied!')).addClass('hop'); // .delay(500).queue(function(){$(this).removeClass('hop').dequeue();});
+
+});
 
 
 /*
