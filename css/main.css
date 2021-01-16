@@ -40,9 +40,9 @@ loading for between pages
 /*
 main button "next" => the arrow
 */
-#next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% auto !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
+#next {position: absolute; top: 50%; right: 0; z-index: 1001; transition: 1s all ease; user-select: none; text-decoration: none; background-size: 300% 100% !important; color: black; transform: translate(-50%, -50%); width: 20vh; height: 20vh; line-height: 20vh; font-size: 12vh; text-align: center; animation: firefly 30s infinite; transition: 1s all ease;}
 /* new background? */
-#next {background: radial-gradient(circle at 5%/*16.5%*/, white 15%, black 100%); background-size: 100% !important !important;}
+#next {background: radial-gradient(circle at 5%/*16.5%*/, white 15%, black 100%);}
   #next, #next div {border-radius: 50%;}
   #next:hover {background-position: right center !important; color: white; font-size: 15vh; margin-right: -5vh; cursor: pointer; /* filter: hue-rotate(45deg); */}
   #next.away {right: -40vh !important;}
@@ -76,7 +76,7 @@ script to screen page setup (half+half screen)
       .halfScreen.top::-webkit-scrollbar-thumb {background: transparent;}
       .halfScreen.top::-webkit-scrollbar {width: 0 !important;}
     .halfScreen.top p {width: calc(100% - 40vh); padding: 5vh 20vh; margin: 0;}
-    .halfScreen.top h1 {font-weight: normal; margin-top: 20vh;}
+    .halfScreen.top h1 {font-weight: normal; margin-top: 20vh; padding: 0 3vh;}
     .halfScreen.top .table {margin: 0 auto; text-align: center; font-size: 3vh; margin-bottom: 10vh;}
       .halfScreen.top .table .tr {display: list-item;}
       .halfScreen.top .table .tr .td {display: inline-block; padding: 0.5vh 5vh; width: 30vh; vertical-align: top;}
@@ -181,7 +181,7 @@ mobile version adjustments
 */
 @media (max-aspect-ratio: 1/1) {
 
-  .text {font-size: 5vh;}
+  .text {font-size: 5vh; word-wrap: break-word; white-space: normal;}
   #scrollMe {opacity: 0.5;}
   .halfScreen.top p {width: calc(100% - 20vh); padding: 5vh 10vh;}
   #next {right: -7vh !important;}

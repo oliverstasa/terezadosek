@@ -32,9 +32,9 @@ include './php/ini.php';
 
   if (strpos($_SERVER['REQUEST_URI'], "admin")) {
     echo '
-    <script src="https://famufest.cz/js/editor_json/dist/editor.js"></script>
-    <script src="https://famufest.cz/js/editor_json/dist/table.js"></script>
-    <script src="https://famufest.cz/js/editor_json/dist/header.js"></script>
+    <script src="/js/editor.js"></script>
+    <script src="/js/table.js"></script>
+    <script src="/js/header.js"></script>
     <script src="/js/fce.admin.js?v=0.alfa" type="module"></script>';
   }
 

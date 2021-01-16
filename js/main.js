@@ -624,16 +624,19 @@ $(document).on('click touch', '.mailto', function(e){
 
 /*
 cool effect for next button
-disabled for now
+disabled for no obvious reason
 */
 /*
-$(document).on('mouseover', '#next', function(e){
+$(document).on('mousemove', '#next', function(e){
 
   var button = $(this),
       curPos = {'x': e.pageX,
-                'y': e.pageY};
+                'y': e.pageY},
+      buttonCords = {'top': button.position().top},
+      pxFromTop = curPos.y-buttonCords.top;
 
-      console.log(curPos);
+      //button.find('div').css({'background-position-y': pxFromTop+'px'});
+      console.log(pxFromTop);
 
 });
 */

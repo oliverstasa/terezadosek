@@ -99,10 +99,12 @@ switch ($pageType) {
   // text-only page
   case 'textContent':
 
+    $color = ($_SESSION['daytime'] == 'night')?'#161616':'#e9e9e9';
+
     $contentHtml = '
     <div class="pg fadeIn">
       <div class="text">
-        <span style="color: #e9e9e9;">Tereza Dosek</span><br>
+        <span style="color: '.$color.';">Tereza Dosek</span><br>
         '.$html.'
       </div>
     </div>

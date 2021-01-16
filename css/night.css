@@ -4,3 +4,9 @@ html, body {background: black; color: white;}
 *::-webkit-scrollbar-thumb {background: white;}
 
 ::selection {background: white; color: black;}
+
+#next {background: radial-gradient(circle at 5%/*16.5%*/, black 15%, white 100%); color: white;}
+#next:hover {color: black;}
+
+#title {background: white; color: black;}
+#title.hop {color: white;}
