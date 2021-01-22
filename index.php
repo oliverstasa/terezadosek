@@ -15,7 +15,7 @@ include './php/ini.php';
 
   <title>Tereza Dosek</title>
   <meta name="keywords" content="screenplay, scénáristka, Tereza Dosek, FAMU">
-  <meta name="description" content="gets text rekt">
+  <meta name="description" content="Videogames producer and a Screenwriter. This is a web of an artist who strives to be just those two things and not also editor, actor, designer and director. Really.">
 
   <meta name="robots" content="all">
   <meta name="author" content="Oliver Staša">

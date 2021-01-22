@@ -253,9 +253,9 @@ export function page(url) {
                           // loading = toggle messages
                           var itt = 0,
                               downloadTimeCalc = Math.round(obj.videoSize/window.kbps), //.toFixed(0)
-                              tooLongText = lang('pomalé připojení, může to trvat věčně', 'slow connection, it may take forever'),
-                              kecy = lang(['blíží se to', 'máte pěkný účes', 'ještě chvíli', 'tip na vaření: koláč'],
-                                          ['bear with me', 'you got nice haircut', 'just a moment', 'cooking tip: pie']);
+                              tooLongText = lang('…to je moc dobrý, na to, aby to byla pravda…<br>pomalé připojení, může to trvat věčně', '…this is too good to be true…<br>slow connection, it may take forever'),
+                              kecy = lang(['chytám fráze – vyčkejte', 'co je, sakra, sous-vide?', 'vypadá to dobře, že jo', 'dokud toho není kýbl, není to kafe'],
+                                          ['catching phrases – bear with me', 'what the hell is sous-vide?', 'looks cool doesn’t it', 'unless it comes in a bucket it’s not a coffee']);
 
                               console.log('download time\nmy estimate: '+downloadTimeCalc+'s');
 

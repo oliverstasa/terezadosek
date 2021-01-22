@@ -82,7 +82,7 @@ script to screen page setup (half+half screen)
       .halfScreen.top .table .tr .td {display: inline-block; padding: 0.5vh 5vh; width: 30vh; vertical-align: top;}
   .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh;}
     .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; transition: 0.5s ease; z-index: 99;} /* width: 100vw; height: auto; */
-    .halfScreen.bot .loadingText {font-style: italic;}
+    .halfScreen.bot .loadingText {font-style: italic; font-size: 50%;}
     .halfScreen.bot #countdown {position: absolute; top: 0; left: 0; width: 100%; height: 50vh; background: linear-gradient(white, transparent); transition: all 1s linear;}
 
 
