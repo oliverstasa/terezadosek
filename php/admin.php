@@ -138,7 +138,7 @@ if ($_SESSION['admin'] == 1) {
       $adminHtml .= '</div>';
       $adminHtml .= '<div id="editor_3" class="editorjs" name="scriptContent"></div>';
       $adminHtml .= '<br>';
-      $adminHtml .= '<div class="popisek">SCRIPT EN</div>';
+      $adminHtml .= '<div class="popisek">SCRIPT EN <span class="title" style="cursor: help;" dataTitle="<li>click into CZ textarea<li>push [ctrl/cmd]+[a] <b>twice</b><li>push [ctrl/cmd]+[c]<li>click into EN textarea<li>push [ctrl/cmd]+[v]">[?] Duplicate content from CZ</span></div>';
       $adminHtml .= '<div id="editor_4" class="editorjs" name="scriptContent_en"></div>';
       $adminHtml .= '</div>';
 
