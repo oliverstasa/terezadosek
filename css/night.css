@@ -11,4 +11,6 @@ html, body {background: black; color: white;}
 #title {background: white; color: black;}
 #title.hop {color: white;}
 
+.progress {background: white;}
+
 .editorjs {color: black;}
