@@ -28,6 +28,17 @@ include './php/ini.php';
   <script src="/js/jq.js" type="text/javascript"></script>
   <script src="/js/fce.js?v=0.9" type="module"></script>
 
+  <meta property="og:image" content="/data/terezadosek.jpg">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1W2KLXLVF8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1W2KLXLVF8');
+  </script>
+
   <?php
 
   if (strpos($_SERVER['REQUEST_URI'], "admin")) {

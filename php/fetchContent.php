@@ -126,11 +126,11 @@ switch ($pageType) {
         <div class="loadingStep loading"></div>
         <div class="progress"></div>
         <div class="controls">
-          <div id="play" class="title" dataTitle="'.lang('PŘEHRÁT <i>[MEZERNÍK]</i>', 'PLAY <i>[SPACE BAR]</i>').'">▶</div>
-          <div id="stop" class="title" dataTitle="'.lang('ZASTAVIT <i>[MEZERNÍK]</i>', 'STOP <i>[SPACE BAR]</i>').'">◼</div>
-          <div id="end" class="title" dataTitle="'.lang('OPAKOVAT <i>[MEZERNÍK]</i>', 'REPEAT <i>[SPACE BAR]</i>').'">↺</div>
-          <div id="mute" class="title" dataTitle="'.lang('ZTIŠIT <i>[M]</i>', 'MUTE <i>[M]</i>').'">'.lang('T', 'M').'</div>
-          <div id="sound" class="title" dataTitle="'.lang('ZAPNOUT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'">'.lang('Z', 'S').'</div>
+          <div id="play" class="title" dataTitle="'.lang('PŘEHRÁT <i>[MEZERNÍK]</i>', 'PLAY <i>[SPACE BAR]</i>').'"></div>
+          <div id="stop" class="title" dataTitle="'.lang('ZASTAVIT <i>[MEZERNÍK]</i>', 'STOP <i>[SPACE BAR]</i>').'"></div>
+          <div id="end" class="title" dataTitle="'.lang('OPAKOVAT <i>[MEZERNÍK]</i>', 'REPEAT <i>[SPACE BAR]</i>').'"></div>
+          <div id="mute" class="title" dataTitle="'.lang('ZTIŠIT <i>[M]</i>', 'MUTE <i>[M]</i>').'"></div>
+          <div id="sound" class="title" dataTitle="'.lang('ZAPNOUT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'"></div>
         </div>
         <div class="halfScreen bot">
           <span class="loadingText"><span id="bearWithMe">'.lang('stahuje se obsah', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
@@ -140,7 +140,7 @@ switch ($pageType) {
         </div>
       </div>
       ';
-      // 🕨 🕪
+      // 🕨 🕪 ▶ ◼ ↺
 
   break;
 }

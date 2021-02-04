@@ -75,7 +75,7 @@ script to screen page setup (half+half screen)
   .halfScreen.top.scrollable {overflow-y: auto;}
       .halfScreen.top::-webkit-scrollbar-thumb {background: transparent;}
       .halfScreen.top::-webkit-scrollbar {width: 0 !important;}
-    .halfScreen.top p {width: calc(100% - 40vh); padding: 5vh 20vh; margin: 0;}
+    .halfScreen.top p {width: calc(100% - 40vh); max-width: 50vw; padding: 5vh 20vh; margin: 0 auto;}
     .halfScreen.top h1 {font-weight: normal; margin-top: 20vh; padding: 0 3vh;}
     .halfScreen.top .table {margin: 0 auto; text-align: center; font-size: 3vh; margin-bottom: 10vh;}
       .halfScreen.top .table .tr {display: list-item;}
@@ -102,12 +102,16 @@ text handeling
 video controls => play, pause, end, mute, sound buttons
 */
 .controls {position: absolute; display: none; top: calc(51.5vh); left: 2.5vh; z-index: 100; user-select: none;}
-  .controls div {background: transparent; color: white; font-size: 5vh; outline: none; border: none; transition: all 0.25s ease; float: left;}
+  .controls div {background: transparent; color: white; margin-top: 1vh; width: 5vh; height: 5vh; outline: none; border: none; transition: all 0.25s ease; float: left;}
     .controls div:hover {transform: translateX(-0.5vh); cursor: pointer; text-shadow: 0 0 4vh white;}
+  #play {background: url('/data/play.png') no-repeat center center; background-size: cover;}
+  #stop {background: url('/data/stop.png') no-repeat center center; background-size: cover;}
+  #end {background: url('/data/repeat.png') no-repeat center center; background-size: cover;}
+  #mute {background: url('/data/mute.png') no-repeat center center; background-size: cover;}
+  #sound {background: url('/data/sound.png') no-repeat center center; background-size: cover;}
     #stop, #end, #mute {display: none;}
-    #end {padding-right: 0.3vh;}
-  #mute, #sound {padding-left: 1.5vh; margin-top: 1vh; /* transform: rotate(180deg); */ font-size: 3.8vh;}
-    #mute:hover, #sound:hover {transform: translateX(-0.5vh); /* rotate(180deg) */}
+  #mute, #sound {padding-left: 2vh;}
+    #mute:hover, #sound:hover {transform: translateX(-0.5vh);}
 
 
 /*
@@ -183,7 +187,7 @@ mobile version adjustments
 
   .text {font-size: 5vh; word-wrap: break-word; white-space: normal;}
   #scrollMe {opacity: 0.5;}
-  .halfScreen.top p {width: calc(100% - 20vh); padding: 5vh 10vh;}
+  .halfScreen.top p {width: calc(100% - 20vh); max-width: 90vw; padding: 5vh 10vh;}
   #next {right: -7vh !important;}
   .halfScreen.top .table .tr {display: inline-block;}
   .halfScreen.top .table .tr .td {display: list-item; list-style: none; height: 10vh;}
