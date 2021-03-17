@@ -19,6 +19,7 @@ html, body {margin: 0; padding: 0; width: 100%; height: 100%; font-family: regul
 *::-webkit-scrollbar-thumb {background: black;}
 
 ::selection {background: black; color: white;}
+a::selection {background: blue;}
 
 a, a:hover, a:visited {color: blue; text-decoration: none; cursor: pointer;}
   a:hover {text-decoration: underline;}
@@ -78,7 +79,7 @@ script to screen page setup (half+half screen)
     .halfScreen.top p {width: calc(100% - 40vh); max-width: 50vw; padding: 5vh 20vh; margin: 0 auto;}
     .halfScreen.top h1 {font-weight: normal; margin-top: 20vh; padding: 0 3vh;}
     .halfScreen.top .table {margin: 0 auto; text-align: center; font-size: 3vh; margin-bottom: 10vh;}
-      .halfScreen.top .table .tr {display: list-item;}
+      .halfScreen.top .table .tr {display: list-item; list-style: none;}
       .halfScreen.top .table .tr .td {display: inline-block; padding: 0.5vh 5vh; width: 30vh; vertical-align: top;}
   .halfScreen.bot {top: 50%; background: black; overflow-y: hidden; line-height: 50vh; color: white; font-size: 5vh;}
     .halfScreen.bot video {height: 50vh; width: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; transition: 0.5s ease; z-index: 99;} /* width: 100vw; height: auto; */

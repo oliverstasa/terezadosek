@@ -133,9 +133,9 @@ switch ($pageType) {
           <div id="sound" class="title" dataTitle="'.lang('ZAPNOUT ZVUK <i>[M]</i>', 'SOUND ON <i>[M]</i>').'"></div>
         </div>
         <div class="halfScreen bot">
-          <span class="loadingText"><span id="bearWithMe">'.lang('stahuje se obsah', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
+          <span class="loadingText"><span id="bearWithMe">'.lang('načítá se obsah', 'fetching content').'</span><span class="wait"><span>.</span><span>.</span><span>.</span></span></span>
           <span id="countdown"></span>
-          <video muted preload="auto" class="fadeOut">
+          <video muted preload="auto" playsinline class="fadeOut">
           </video>
         </div>
       </div>
@@ -163,7 +163,7 @@ array_push($json, '"pageTitle": "'.$pageTitle.'"');
 // video URL
 // video SIZE in Kb
 if (isset($videoUrl)) {
-  array_push($json, '"videoUrl": "/data/video/'.$videoUrl.'"');
+  array_push($json, '"videoUrl": "https://'.$_SERVER['HTTP_HOST'].'/data/video/'.$videoUrl.'"');
   array_push($json, '"videoSize": "'.(filesize('../data/video/'.$videoUrl)/1024).'"');
 }
 

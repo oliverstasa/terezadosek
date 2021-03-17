@@ -103,7 +103,7 @@ $(document).on('click touch', '#stop', function(){
 });
 // END ↺
 $(document).on('click touch', '#end', function(){
-  document.querySelector('video').currentTime = 0;
+  $('video').get(0).currentTime = 0;
   $('#script').scrollTop(0);
   progressBar(100, 0);
   $('#end').hide();
@@ -112,14 +112,14 @@ $(document).on('click touch', '#end', function(){
 // SOUND 🕪
 $(document).on('click touch', '#sound', function(){
   window.muteState = 'sound';
-  document.querySelector('video').muted = false;
+  $('video').get(0).muted = false;
   $('#sound').hide();
   $('#mute').show();
 });
 // MUTE 🕨
 $(document).on('click touch', '#mute', function(){
   window.muteState = 'mute';
-  document.querySelector('video').muted = true;
+  $('video').get(0).muted = true;
   $('#mute').hide();
   $('#sound').show();
 });
@@ -238,9 +238,9 @@ export function scriptToScreen(state){
       window.selfHandle = false;
 
       // set video to same position (thats discutable...)
-      document.querySelector('video').currentTime = videoPosTime;
+      $('video').get(0).currentTime = videoPosTime;
       // start video playback
-      document.querySelector('video').play();
+      $('video').get(0).play();
 
       // if scrollPos is above "first scene line", scroll to it
       if (script.scrollTop() < firstP/2-scriptPos) {
@@ -291,7 +291,7 @@ export function scriptToScreen(state){
       $('#stop, #end').hide();
 
       // pause video playback
-      document.querySelector('video').pause();
+      $('video').get(0).pause();
       // pause script playback
       $('#script, .loadingStep').stop(true, false).clearQueue();
 
@@ -304,8 +304,8 @@ export function scriptToScreen(state){
       window.selfHandle = true;
 
       // make sure video is stopped at the end
-      document.querySelector('video').pause();
-      document.querySelector('video').currentTime = window.videoDur;
+      $('video').get(0).pause();
+      $('video').get(0).currentTime = window.videoDur;
 
       // button display/hide
       $('.controls').fadeIn();
@@ -378,7 +378,7 @@ $(document).on('wheel mousedown touchstart', '#script', function(){
 });
 
 
-$(document).on('scroll wheel touchmove', '#script', function(e){
+$(document).on('scroll wheel touchmove touch', '#script', function(e){
 
 
   if (window.selfHandle) {
@@ -425,7 +425,7 @@ $(document).on('scroll wheel touchmove', '#script', function(e){
       // video is not playing = can be handled, set frame to according position
       // video has to contain keyframes at each 5th or 10th frame, videos with 50+ will result in lag
       // more about that: https://docs.microsoft.com/cs-cz/windows/win32/wmformat/configuring-video-streams-for-seeking-performance
-      document.querySelector('video').currentTime = timeSetupFloor;
+      $('video').get(0).currentTime = timeSetupFloor;
 
 
       // button setup
@@ -640,3 +640,12 @@ $(document).on('mousemove', '#next', function(e){
 
 });
 */
+
+
+
+/*
+fuck iphone
+*/
+export function isMobile() {
+  return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+}

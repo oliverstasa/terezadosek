@@ -2,7 +2,7 @@
 ou shit router!
 lady gaga would aprove
 */
-import {scriptToScreen, loading, changeNextButton, lang} from './main.js';
+import {scriptToScreen, loading, changeNextButton, lang, isMobile} from './main.js';
 
 
 
@@ -27,11 +27,13 @@ export function page(url) {
   if (window.reqVideo) {
     // cancel request
     window.reqVideo.abort();
-    // set request to false, so this doesnt go arround
-    window.reqVideo = false;
-    // and cancel loading interval
-    clearInterval(window.longLoadingText);
   }
+  // set request to false, so this doesnt go arround
+  window.reqVideo = false;
+  // and cancel loading interval
+  clearInterval(window.longLoadingText);
+  // remove listeners and objects
+  $('video').off().remove();
 
 
 
@@ -119,10 +121,11 @@ export function page(url) {
 
 
 
+
               // if abilities are still disabled, preload video
               // thats because if they are enabled means video has been loaded
               // so this function doesnt happen twice (for some reason it sometimes did)
-              if (!window.scriptAbilities) {
+              if (!window.scriptAbilities) { // !window.scriptAbilities
 
 
 
@@ -152,6 +155,9 @@ export function page(url) {
                           // destroy the image
                           dump = null;
 
+                          // destroy prev video request
+                          window.reqVideo = null;
+
 
                           // now start loading the video...
 
@@ -167,27 +173,47 @@ export function page(url) {
                           window.reqVideo.open('GET', obj.videoUrl+'?t='+videoStartTime, true);
                           window.reqVideo.responseType = 'blob';
 
+                          // loading bar
+                          window.reqVideo.onprogress = function(e) {
+
+                            if (e.lengthComputable) {
+                              var percent = (e.loaded / e.total) * 100;  
+                              $('#countdown').css({height: 50-(percent/2)+'vh'});
+                            }
+
+                          };
+
                           // when loaded
                           window.reqVideo.onload = function() {
                              // stat is 200 = ok
-                             if (this.status === 200) {
-
-
+                             if (this.status === 200 || this.status === 206) {
 
                                 // get new video url
                                 var videoBlob = this.response,
                                     vid = URL.createObjectURL(videoBlob),
                                     video = document.querySelector('video');
 
-
-
                                 // set loaded video to video element
                                 video.src = vid;
+
+
+                                if (isMobile()) {
+
+                                  $('video').attr('src', vid);
+                                  $('video').get(0).load();
+
+                                  $('video').get(0).play();
+                                  setTimeout(function(){
+                                    $('video').get(0).pause();
+                                  }, 10);
+
+                                }
+
+
                                 // video duration global var
                                 $(video).one('loadedmetadata', function(){
                                   window.videoDur = video.duration;
                                 });
-
 
 
                                       // check if video can 100% play through and fade it in
@@ -222,7 +248,7 @@ export function page(url) {
 
 
                                             // countdown before animation + playback starts
-                                            $('.loadingStep').removeClass('loading').animate({width: 0}, 2000, 'linear', function(){
+                                            $('.loadingStep').removeClass('loading').animate({width: 0}, 1000, 'linear', function(){
                                               if (!window.selfHandle) {
 
                                                 // play script+video
@@ -236,16 +262,22 @@ export function page(url) {
                                       });
 
                              }
-                          }
+                          };
 
                           // if error
                           window.reqVideo.onerror = function(e) {
+
                             console.log(e);
+
+                            clearInterval(window.longLoadingText);
+                            $('.loadingText').html(lang('[!] Chyba při načtání obsahu.', '[!] Error while fetching content.'));
+
+                            //window.reqVideo.send();
                             // this sometimes happens, when page skipping, so i decided to ignore the error, because it works anyway
                             //alert('error while loading video, sorry not my fault');
-                          }
+                          };
 
-                          // make preload happen
+                          // make preload happen  
                           window.reqVideo.send();
 
 
@@ -292,13 +324,15 @@ export function page(url) {
                                 }
 
                                 // calc height of coundown
+                                /*
                                 if ((downloadTimeCalc-itt) > 0) {
                                   var countdownSec = downloadTimeCalc-itt;
                                 } else {
                                   var countdownSec = 1;
                                 }
+                                */
                                 // set height of coundown
-                                $('#countdown').css({height: ((countdownSec/downloadTimeCalc)*50)+'vh'});
+                                //$('#countdown').css({height: ((countdownSec/downloadTimeCalc)*50)+'vh'});
 
                                 // add a itteration
                                 itt++;
@@ -316,7 +350,42 @@ export function page(url) {
 
                 // this happens when scriptToScreen has still set window.scriptAbilities to true
                 // but never the less - it seems to have no impact, so i leave the error in comment
-                // alert('error, scriptToScreen has not ended properly');
+                // alert('error, scriptToScreen has not loaded properly');
+                window.location.reload();
+                
+                // mobile version
+                /*
+                setTimeout(function(){
+
+                  // alert(lang('Bohužel, iPhone nepodporuje funkce interaktivního videa.\n\nOstatní Apple produkty ano.', 'Unfortunately, iPhone does not yet support interactive video functions.\n\nOther Apple products does.'));
+                  $('.loadingText').html(lang('Video není podporováno.', 'Video not supported.'));
+
+                  $('video, #countdown, .loadingText').remove();
+                  $('.bot').append('<video muted playsinline></video>');
+
+                  $('video').attr('src', obj.videoUrl);
+                  $('video').get(0).load();
+
+                  $('video').get(0).play();
+                  setTimeout(function(){
+                    $('video').get(0).pause();
+                  }, 10);
+
+                  $('.loadingStep').removeClass('loading').animate({width: 0}, 3000, 'linear', function(){
+
+                    //$('video').removeClass('fadeOut');
+                    $('#script').addClass('scrollable grabber');
+                    window.scriptAbilities = true;
+                    window.videoDur = $('video').get(0).duration;
+                    alert(window.videoDur);
+
+                    scriptToScreen('play');
+
+                  });
+
+                }, 1000);
+                */
+                
 
               }
 
